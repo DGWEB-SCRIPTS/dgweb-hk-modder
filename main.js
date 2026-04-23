@@ -2,7 +2,6 @@ import { Decode, Encode, DownloadData } from './functions.js';
 
 let dgSaveOriginalTexto = ""; 
 let dgFileName = "user1.dat";
-let valoresIniciais = {}; 
 
 const listaHabilidades = [
     'hasDash', 'hasWalljump', 'hasSuperDash', 
@@ -14,13 +13,12 @@ const statusText = document.getElementById('status');
 const editorBox = document.getElementById('editorBox');
 const manualEditor = document.getElementById('manualEditor');
 
-// 1. SINCRONIZAÇÃO EM TEMPO REAL (Cores e Textos)
+// 1. SINCRONIZAÇÃO EM TEMPO REAL (As cores que já estão funcionando)
 function sincronizarBotoes() {
     try {
         const data = JSON.parse(manualEditor.value);
         const pData = data.playerData ? data.playerData : data;
 
-        // GEO
         const btnGeo = document.getElementById('btnDinheiro');
         if (pData.geo > 50000) {
             btnGeo.className = "btn-reset";
@@ -30,7 +28,6 @@ function sincronizarBotoes() {
             btnGeo.innerText = "💰 Geo Infinito";
         }
 
-        // VIDA
         const btnVida = document.getElementById('btnVida');
         if (pData.maxHealthBase > 20) {
             btnVida.className = "btn-reset";
@@ -40,7 +37,6 @@ function sincronizarBotoes() {
             btnVida.innerText = "❤️ Vida Máxima";
         }
 
-        // HIT KILL
         const btnHit = document.getElementById('btnHitKill');
         if (pData.nailDamage >= 2500) {
             btnHit.className = "btn-reset";
@@ -50,7 +46,6 @@ function sincronizarBotoes() {
             btnHit.innerText = "🗡️ Hit Kill";
         }
 
-        // AMULETOS (Olha para o custo do amuleto 1 pra saber se ativou o cheat)
         const btnAmu = document.getElementById('btnAmuletos');
         if (pData.charmCost_1 === 0) {
             btnAmu.className = "btn-reset";
@@ -60,7 +55,6 @@ function sincronizarBotoes() {
             btnAmu.innerText = "📿 Amuletos (Sem Bússola)";
         }
 
-        // HABILIDADES
         const btnHab = document.getElementById('btnHabilidades');
         const temHab = listaHabilidades.some(h => pData[h] === true);
         if (temHab) {
@@ -71,10 +65,10 @@ function sincronizarBotoes() {
             btnHab.innerText = "✨ Todas Habilidades";
         }
 
-    } catch (e) { /* Ignora se estiver digitando algo errado */ }
+    } catch (e) { /* Ignora erro enquanto digita */ }
 }
 
-// 2. CARREGAR E SALVAR ESTADO
+// 2. LER ARQUIVO
 fileInput.addEventListener('change', async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -91,9 +85,6 @@ fileInput.addEventListener('change', async (event) => {
         dgSaveOriginalTexto = JSON.stringify(obj, null, 2);
         manualEditor.value = dgSaveOriginalTexto;
         
-        // Memória blindada do save original
-        valoresIniciais = JSON.parse(dgSaveOriginalTexto); 
-
         statusText.innerText = "✅ Save pronto!";
         editorBox.style.display = "block";
         sincronizarBotoes();
@@ -104,79 +95,76 @@ fileInput.addEventListener('change', async (event) => {
 
 manualEditor.addEventListener('input', sincronizarBotoes);
 
-// 3. LÓGICA DE APLICAÇÃO E REVERSÃO
-function aplicarToggle(callback) {
+// 3. APLICAÇÃO BRUTA DOS VALORES (Sem Cookies)
+function aplicarMudanca(callback) {
     try {
         let save = JSON.parse(manualEditor.value);
         let pData = save.playerData ? save.playerData : save;
-        let pOrig = valoresIniciais.playerData ? valoresIniciais.playerData : valoresIniciais;
 
-        callback(pData, pOrig);
+        callback(pData); // Modifica os dados
 
         manualEditor.value = JSON.stringify(save, null, 2);
-        sincronizarBotoes();
+        sincronizarBotoes(); // Atualiza a cor do botão na hora
     } catch (e) {
         alert("❌ Erro no JSON! Conserte as vírgulas ou aspas antes de clicar.");
     }
 }
 
-// BOTÕES
+// BOTÕES COM VALORES FIXOS DA BASE
 document.getElementById('btnDinheiro').addEventListener('click', () => {
-    aplicarToggle((p, o) => {
-        if (p.geo > 50000) p.geo = o.hasOwnProperty('geo') ? o.geo : 100;
-        else p.geo = 9999999;
+    aplicarMudanca((p) => {
+        if (p.geo > 50000) p.geo = 100; // Valor Base
+        else p.geo = 9999999;           // Cheat
     });
 });
 
 document.getElementById('btnVida').addEventListener('click', () => {
-    aplicarToggle((p, o) => {
+    aplicarMudanca((p) => {
         if (p.maxHealthBase > 20) {
-            p.maxHealthBase = o.hasOwnProperty('maxHealthBase') ? o.maxHealthBase : 5;
-            p.maxHealth = o.hasOwnProperty('maxHealth') ? o.maxHealth : 5;
-            p.health = o.hasOwnProperty('health') ? o.health : 5;
+            p.maxHealthBase = 5; // Valores Base
+            p.maxHealth = 5;
+            p.health = 5;
         } else {
-            p.maxHealthBase = 999; p.maxHealth = 999; p.health = 999;
+            p.maxHealthBase = 999; // Cheat
+            p.maxHealth = 999;
+            p.health = 999;
         }
     });
 });
 
 document.getElementById('btnHitKill').addEventListener('click', () => {
-    aplicarToggle((p, o) => {
-        if (p.nailDamage >= 2500) p.nailDamage = o.hasOwnProperty('nailDamage') ? o.nailDamage : 5;
-        else p.nailDamage = 2500;
+    aplicarMudanca((p) => {
+        if (p.nailDamage >= 2500) p.nailDamage = 5; // Valor Base
+        else p.nailDamage = 2500;                   // Cheat
     });
 });
 
 document.getElementById('btnHabilidades').addEventListener('click', () => {
-    aplicarToggle((p, o) => {
-        // Se já tiver alguma habilidade, reverte. Senão, ativa.
-        const ativar = !listaHabilidades.some(h => p[h] === true);
-        listaHabilidades.forEach(h => {
-            if (ativar) {
-                p[h] = true;
-            } else {
-                if (o.hasOwnProperty(h)) p[h] = o[h];
-                else delete p[h]; // Apaga se não tinha
-            }
-        });
+    aplicarMudanca((p) => {
+        const temHab = listaHabilidades.some(h => p[h] === true);
+        if (temHab) {
+            // Reverter (Desliga tudo)
+            listaHabilidades.forEach(h => p[h] = false);
+        } else {
+            // Cheat (Liga tudo)
+            listaHabilidades.forEach(h => p[h] = true);
+        }
     });
 });
 
 document.getElementById('btnAmuletos').addEventListener('click', () => {
-    aplicarToggle((p, o) => {
+    aplicarMudanca((p) => {
         if (p.charmCost_1 === 0) {
-            // REVERTER
+            // REVERTER BRUTO: Tira tudo de você e reseta o custo
             for(let i=1; i<=40; i++) {
-                ['gotCharm_', 'newCharm_', 'charmCost_', 'equippedCharm_'].forEach(prefix => {
-                    let key = prefix + i;
-                    if (o.hasOwnProperty(key)) p[key] = o[key];
-                    else delete p[key]; // Se o cara não tinha o amuleto, deleta ele do save
-                });
+                p[`gotCharm_${i}`] = false;
+                p[`equippedCharm_${i}`] = false;
+                p[`charmCost_${i}`] = 1;
             }
-            p.charmSlots = o.hasOwnProperty('charmSlots') ? o.charmSlots : 3;
-            p.fragileHealth_unbreakable = o.hasOwnProperty('fragileHealth_unbreakable') ? o.fragileHealth_unbreakable : false;
-            p.fragileGreed_unbreakable = o.hasOwnProperty('fragileGreed_unbreakable') ? o.fragileGreed_unbreakable : false;
-            p.fragileStrength_unbreakable = o.hasOwnProperty('fragileStrength_unbreakable') ? o.fragileStrength_unbreakable : false;
+            p.charmSlots = 3;
+            p.fragileHealth_unbreakable = false;
+            p.fragileGreed_unbreakable = false;
+            p.fragileStrength_unbreakable = false;
         } else {
             // APLICAR CHEAT
             for(let i=1; i<=40; i++) {
@@ -197,9 +185,9 @@ document.getElementById('btnAmuletos').addEventListener('click', () => {
     });
 });
 
-// 4. RESET E DOWNLOAD
+// 4. RESET GERAL E DOWNLOAD
 document.getElementById('btnReset').addEventListener('click', () => {
-    if(confirm("Deseja resetar tudo para o original do arquivo?")) {
+    if(confirm("Deseja resetar tudo para o original do arquivo que você upou?")) {
         manualEditor.value = dgSaveOriginalTexto;
         sincronizarBotoes();
         alert("✅ Arquivo resetado para o original com sucesso!");
