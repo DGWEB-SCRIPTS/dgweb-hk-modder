@@ -1,0 +1,18 @@
+{
+  "name": "dgweb-hk-modder",
+  "version": "1.0.0",
+  "description": "Hollow Knight Save Modder by DgWeb Dev",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "aes-js": "^3.1.2"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

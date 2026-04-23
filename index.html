@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DgWeb Dev - Hollow Knight Modder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <header>
+            <h1>Hollow Knight Save Modder</h1>
+            <p class="brand">Desenvolvido por <span>DgWeb Dev</span></p>
+        </header>
+        
+        <section class="upload-section">
+            <label for="fileInput" class="custom-file-upload">
+                📁 Selecionar Save (user1.dat)
+            </label>
+            <input type="file" id="fileInput" accept=".dat" />
+            <p id="status">Aguardando importação do arquivo...</p>
+        </section>
+
+        <div id="editorBox" class="hidden">
+            <div class="preset-container">
+                <h3>Presets Rápidos</h3>
+                <div class="grid-botoes">
+                    <button class="btn-preset" id="btnAmuletos">📿 Amuletos + Custo 0</button>
+                    <button class="btn-preset" id="btnHitKill">🗡️ Hit Kill</button>
+                    <button class="btn-preset" id="btnVida">❤️ Vida Máxima</button>
+                    <button class="btn-preset" id="btnDinheiro">💰 Geo Infinito</button>
+                    <button class="btn-reset" id="btnReset">🔄 Resetar Alterações</button>
+                </div>
+            </div>
+
+            <div class="manual-section">
+                <h3>Editor Manual (JSON)</h3>
+                <textarea id="manualEditor" spellcheck="false"></textarea>
+            </div>
+
+            <div class="download-section">
+                <button class="btn-down text" id="btnDownTexto">📄 Baixar Descriptografado (.txt)</button>
+                <button class="btn-down crypt" id="btnDownJogo">💾 Baixar para o Jogo (.dat)</button>
+            </div>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 30px; font-size: 0.85rem; color: #8b949e; border-top: 1px solid #30363d; padding-top: 15px;">
+            &copy; 2026 DgWeb Dev. Todos os direitos reservados.
+        </footer>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
