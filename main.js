@@ -3,63 +3,34 @@ import { Decode, Encode, DownloadData } from './functions.js';
 let dgSaveOriginalTexto = ""; 
 let dgFileName = "user1.dat";
 
+// "Cookies" para salvar o estado exato do jogador ao carregar o arquivo
+let valoresIniciais = {
+    geo: 100,
+    nailDamage: 5,
+    maxHealthBase: 5,
+    maxHealth: 5,
+    health: 5,
+    charmSlots: 3,
+    charms: {},
+    fragileHealth: false,
+    fragileGreed: false,
+    fragileStrength: false
+};
+
+// Controladores dos botões (false = desligado, true = ligado)
+let cheatsAtivos = {
+    amuletos: false,
+    hitKill: false,
+    vida: false,
+    dinheiro: false
+};
+
 const fileInput = document.getElementById('fileInput');
 const statusText = document.getElementById('status');
 const editorBox = document.getElementById('editorBox');
 const manualEditor = document.getElementById('manualEditor');
 
-// FUNÇÃO PARA ATUALIZAR A COR E O TEXTO DOS BOTÕES
-function atualizarBotoes() {
-    try {
-        let obj = JSON.parse(manualEditor.value);
-        let alvo = obj.playerData ? obj.playerData : obj;
-
-        const btnAmuletos = document.getElementById('btnAmuletos');
-        const btnHitKill = document.getElementById('btnHitKill');
-        const btnVida = document.getElementById('btnVida');
-        const btnDinheiro = document.getElementById('btnDinheiro');
-
-        // Dinheiro
-        if (alvo.geo > 5000) {
-            btnDinheiro.className = "btn-reset";
-            btnDinheiro.innerText = "🔄 Reverter Dinheiro";
-        } else {
-            btnDinheiro.className = "btn-preset";
-            btnDinheiro.innerText = "💰 Geo Infinito";
-        }
-
-        // Vida
-        if (alvo.maxHealthBase > 20) {
-            btnVida.className = "btn-reset";
-            btnVida.innerText = "🔄 Reverter Vida";
-        } else {
-            btnVida.className = "btn-preset";
-            btnVida.innerText = "❤️ Vida Máxima";
-        }
-
-        // Hit Kill
-        if (alvo.nailDamage >= 2500) {
-            btnHitKill.className = "btn-reset";
-            btnHitKill.innerText = "🔄 Reverter Hit Kill";
-        } else {
-            btnHitKill.className = "btn-preset";
-            btnHitKill.innerText = "🗡️ Hit Kill";
-        }
-
-        // Amuletos (Checa pelo limite de slots modificado)
-        if (alvo.charmSlots === 11) {
-            btnAmuletos.className = "btn-reset";
-            btnAmuletos.innerText = "🔄 Reverter Amuletos";
-        } else {
-            btnAmuletos.className = "btn-preset";
-            btnAmuletos.innerText = "📿 Amuletos + Custo 0";
-        }
-    } catch (e) {
-        // Se o JSON quebrar enquanto digita, ignora até consertar
-    }
-}
-
-// 1. LER E DESCRIPTOGRAFAR
+// 1. LER ARQUIVO E SALVAR A MEMÓRIA ("COOKIES")
 fileInput.addEventListener('change', async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -75,55 +46,84 @@ fileInput.addEventListener('change', async (event) => {
         const jsonPuro = Decode(bytes); 
         const objetoJson = JSON.parse(jsonPuro);
         
+        let alvo = objetoJson.playerData ? objetoJson.playerData : objetoJson;
+
+        // Salva as informações reais do jogador na memória
+        valoresIniciais.geo = alvo.geo || 100;
+        valoresIniciais.nailDamage = alvo.nailDamage || 5;
+        valoresIniciais.maxHealthBase = alvo.maxHealthBase || 5;
+        valoresIniciais.maxHealth = alvo.maxHealth || 5;
+        valoresIniciais.health = alvo.health || 5;
+        valoresIniciais.charmSlots = alvo.charmSlots || 3;
+        valoresIniciais.fragileHealth = alvo.fragileHealth_unbreakable || false;
+        valoresIniciais.fragileGreed = alvo.fragileGreed_unbreakable || false;
+        valoresIniciais.fragileStrength = alvo.fragileStrength_unbreakable || false;
+
+        for(let i = 1; i <= 40; i++) {
+            valoresIniciais.charms[i] = {
+                got: alvo[`gotCharm_${i}`] || false,
+                new: alvo[`newCharm_${i}`] || false,
+                cost: alvo[`charmCost_${i}`] !== undefined ? alvo[`charmCost_${i}`] : 1
+            };
+        }
+        
         dgSaveOriginalTexto = JSON.stringify(objetoJson, null, 2); 
         manualEditor.value = dgSaveOriginalTexto;
         
-        statusText.innerText = "✅ Save carregado! Edite na tela ou clique nos botões.";
+        statusText.innerText = "✅ Save carregado! Edite na tela ou use os botões.";
         statusText.style.color = "#7ee787";
         editorBox.style.display = "block"; 
         
-        atualizarBotoes(); // Verifica como os botões devem nascer
+        // Reseta os botões caso o cara upe outro save
+        cheatsAtivos = { amuletos: false, hitKill: false, vida: false, dinheiro: false };
+        atualizarVisualBotoes();
+
     } catch (erro) {
         statusText.innerText = "❌ Erro ao ler. Arquivo corrompido ou inválido.";
         statusText.style.color = "#ff7b72";
     }
 });
 
-// FAZ OS BOTÕES MUDAREM SE VOCÊ DIGITAR MANUALMENTE NO TEXTO
-manualEditor.addEventListener('input', atualizarBotoes);
+// FUNÇÃO PARA MUDAR A COR E TEXTO DOS BOTÕES
+function atualizarVisualBotoes() {
+    const btnAmuletos = document.getElementById('btnAmuletos');
+    const btnHitKill = document.getElementById('btnHitKill');
+    const btnVida = document.getElementById('btnVida');
+    const btnDinheiro = document.getElementById('btnDinheiro');
 
-// 2. PRESETS COM SISTEMA DE LIGA/DESLIGA (TOGGLE)
-function alternarCheat(aplicarCheatFunc, reverterCheatFunc) {
+    btnAmuletos.className = cheatsAtivos.amuletos ? "btn-reset" : "btn-preset";
+    btnAmuletos.innerText = cheatsAtivos.amuletos ? "🔄 Reverter Amuletos" : "📿 Amuletos + Custo 0";
+
+    btnHitKill.className = cheatsAtivos.hitKill ? "btn-reset" : "btn-preset";
+    btnHitKill.innerText = cheatsAtivos.hitKill ? "🔄 Reverter Hit Kill" : "🗡️ Hit Kill";
+
+    btnVida.className = cheatsAtivos.vida ? "btn-reset" : "btn-preset";
+    btnVida.innerText = cheatsAtivos.vida ? "🔄 Reverter Vida" : "❤️ Vida Máxima";
+
+    btnDinheiro.className = cheatsAtivos.dinheiro ? "btn-reset" : "btn-preset";
+    btnDinheiro.innerText = cheatsAtivos.dinheiro ? "🔄 Reverter Dinheiro" : "💰 Geo Infinito";
+}
+
+// 2. LIGA/DESLIGA INDIVIDUAL E BLINDADO
+function executarToggle(chaveCheat, modificadorFunc) {
     try {
         let obj = JSON.parse(manualEditor.value);
         let alvo = obj.playerData ? obj.playerData : obj;
         
-        let origObj = JSON.parse(dgSaveOriginalTexto);
-        let origAlvo = origObj.playerData ? origObj.playerData : origObj;
-
-        // A função que vamos passar decide se liga ou desliga
-        aplicarCheatFunc(alvo, origAlvo);
+        cheatsAtivos[chaveCheat] = !cheatsAtivos[chaveCheat]; // Inverte: se tava false, vira true
         
-        manualEditor.value = JSON.stringify(obj, null, 2);
-        atualizarBotoes();
+        modificadorFunc(alvo, cheatsAtivos[chaveCheat]); // Aplica a mudança no objeto
+        
+        manualEditor.value = JSON.stringify(obj, null, 2); // Devolve pro texto
+        atualizarVisualBotoes();
     } catch (e) {
-        alert("❌ Erro de sintaxe. Conserte o texto antes de clicar.");
+        alert("❌ Erro no texto! Se você mexeu manualmente, verifique as aspas antes de clicar.");
     }
 }
 
 document.getElementById('btnAmuletos').addEventListener('click', () => {
-    alternarCheat((alvo, orig) => {
-        if (alvo.charmSlots === 11) { // Está com cheat, vamos reverter
-            for(let i = 1; i <= 40; i++) {
-                alvo[`gotCharm_${i}`] = orig[`gotCharm_${i}`];
-                alvo[`newCharm_${i}`] = orig[`newCharm_${i}`];
-                alvo[`charmCost_${i}`] = orig[`charmCost_${i}`];
-            }
-            alvo.charmSlots = orig.charmSlots;
-            alvo.fragileHealth_unbreakable = orig.fragileHealth_unbreakable;
-            alvo.fragileGreed_unbreakable = orig.fragileGreed_unbreakable;
-            alvo.fragileStrength_unbreakable = orig.fragileStrength_unbreakable;
-        } else { // Liga o cheat
+    executarToggle('amuletos', (alvo, ligado) => {
+        if (ligado) {
             for(let i = 1; i <= 40; i++) {
                 alvo[`gotCharm_${i}`] = true;
                 alvo[`newCharm_${i}`] = false;
@@ -133,43 +133,46 @@ document.getElementById('btnAmuletos').addEventListener('click', () => {
             alvo.fragileHealth_unbreakable = true;
             alvo.fragileGreed_unbreakable = true;
             alvo.fragileStrength_unbreakable = true;
+        } else {
+            for(let i = 1; i <= 40; i++) {
+                alvo[`gotCharm_${i}`] = valoresIniciais.charms[i].got;
+                alvo[`newCharm_${i}`] = valoresIniciais.charms[i].new;
+                alvo[`charmCost_${i}`] = valoresIniciais.charms[i].cost;
+            }
+            alvo.charmSlots = valoresIniciais.charmSlots;
+            alvo.fragileHealth_unbreakable = valoresIniciais.fragileHealth;
+            alvo.fragileGreed_unbreakable = valoresIniciais.fragileGreed;
+            alvo.fragileStrength_unbreakable = valoresIniciais.fragileStrength;
         }
     });
 });
 
 document.getElementById('btnHitKill').addEventListener('click', () => {
-    alternarCheat((alvo, orig) => {
-        if (alvo.nailDamage >= 2500) alvo.nailDamage = orig.nailDamage;
-        else alvo.nailDamage = 2500;
+    executarToggle('hitKill', (alvo, ligado) => {
+        alvo.nailDamage = ligado ? 2500 : valoresIniciais.nailDamage;
     });
 });
 
 document.getElementById('btnVida').addEventListener('click', () => {
-    alternarCheat((alvo, orig) => {
-        if (alvo.maxHealthBase > 20) {
-            alvo.maxHealthBase = orig.maxHealthBase;
-            alvo.maxHealth = orig.maxHealth;
-            alvo.health = orig.health;
-        } else {
-            alvo.maxHealthBase = 999;
-            alvo.maxHealth = 999;
-            alvo.health = 999;
-        }
+    executarToggle('vida', (alvo, ligado) => {
+        alvo.maxHealthBase = ligado ? 999 : valoresIniciais.maxHealthBase;
+        alvo.maxHealth = ligado ? 999 : valoresIniciais.maxHealth;
+        alvo.health = ligado ? 999 : valoresIniciais.health;
     });
 });
 
 document.getElementById('btnDinheiro').addEventListener('click', () => {
-    alternarCheat((alvo, orig) => {
-        if (alvo.geo > 5000) alvo.geo = orig.geo;
-        else alvo.geo = 9999999;
+    executarToggle('dinheiro', (alvo, ligado) => {
+        alvo.geo = ligado ? 9999999 : valoresIniciais.geo;
     });
 });
 
-// 3. BOTÃO DE RESET TOTAL
+// 3. BOTÃO DE RESET TOTAL (Botão vermelho de emergência)
 document.getElementById('btnReset').addEventListener('click', () => {
-    if(confirm("Tem certeza? Isso vai desfazer todas as edições no texto.")) {
+    if(confirm("Tem certeza? Isso vai voltar tudo pro arquivo original e desligar os botões.")) {
         manualEditor.value = dgSaveOriginalTexto;
-        atualizarBotoes();
+        cheatsAtivos = { amuletos: false, hitKill: false, vida: false, dinheiro: false };
+        atualizarVisualBotoes();
     }
 });
 
