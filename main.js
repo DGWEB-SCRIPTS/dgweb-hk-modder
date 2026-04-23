@@ -24,71 +24,65 @@ fileInput.addEventListener('change', async (event) => {
         const jsonPuro = Decode(bytes); 
         const objetoJson = JSON.parse(jsonPuro);
         
+        // Joga o JSON bonitinho na telinha
         dgSaveOriginalTexto = JSON.stringify(objetoJson, null, 2); 
         manualEditor.value = dgSaveOriginalTexto;
         
-        statusText.innerText = "✅ Save carregado! Pode editar manualmente ou usar os botões.";
+        statusText.innerText = "✅ Save carregado! Edite na tela ou clique nos botões.";
         statusText.style.color = "#7ee787";
         editorBox.style.display = "block"; 
     } catch (erro) {
         statusText.innerText = "❌ Erro ao ler. Arquivo corrompido ou inválido.";
         statusText.style.color = "#ff7b72";
-        console.error("Erro Decode:", erro);
     }
 });
 
-// FUNÇÃO PARA ATUALIZAR O TEXTAREA COM OS PRESETS
-function aplicarPreset(modificarObjeto) {
-    try {
-        let saveAtual = JSON.parse(manualEditor.value); 
-        modificarObjeto(saveAtual); 
-        manualEditor.value = JSON.stringify(saveAtual, null, 2); 
-        alert("Preset aplicado com sucesso pela DgWeb Dev!");
-    } catch (e) {
-        alert("❌ Erro de sintaxe no editor manual. Clique em 'Resetar Alterações' e tente novamente.");
-    }
-}
+// 2. PRESETS BRUTOS (Modificam o texto direto na telinha)
 
-// 2. PRESETS DA DGWEB
 document.getElementById('btnAmuletos').addEventListener('click', () => {
-    aplicarPreset((save) => {
-        // Libera os 40 amuletos, tira o status de "novo" e coloca o custo no 0
-        for(let i = 1; i <= 40; i++) {
-            save[`gotCharm_${i}`] = true;
-            save[`newCharm_${i}`] = false;
-            save[`charmCost_${i}`] = 0;
-        }
-        // Dá espaço infinito para equipar todos de uma vez
-        save["charmSlots"] = 40; 
-        
-        // Torna os amuletos frágeis inquebráveis
-        save["fragileHealth_unbreakable"] = true;
-        save["fragileGreed_unbreakable"] = true;
-        save["fragileStrength_unbreakable"] = true;
-    });
+    let texto = manualEditor.value;
+    
+    // Substitui tudo dos 40 amuletos usando o padrão exato da sua print
+    for(let i = 1; i <= 40; i++) {
+        texto = texto.replace(new RegExp(`"gotCharm_${i}":\\s*(true|false)`, 'g'), `"gotCharm_${i}": true`);
+        texto = texto.replace(new RegExp(`"newCharm_${i}":\\s*(true|false)`, 'g'), `"newCharm_${i}": false`);
+        texto = texto.replace(new RegExp(`"charmCost_${i}":\\s*\\d+`, 'g'), `"charmCost_${i}": 0`);
+    }
+    
+    texto = texto.replace(/"charmSlots":\s*\d+/g, '"charmSlots": 11'); // 11 é o máximo seguro
+    texto = texto.replace(/"fragileHealth_unbreakable":\s*(true|false)/g, '"fragileHealth_unbreakable": true');
+    texto = texto.replace(/"fragileGreed_unbreakable":\s*(true|false)/g, '"fragileGreed_unbreakable": true');
+    texto = texto.replace(/"fragileStrength_unbreakable":\s*(true|false)/g, '"fragileStrength_unbreakable": true');
+    
+    manualEditor.value = texto; // Devolve pra telinha
+    alert("Amuletos modificados! Pode conferir no texto.");
 });
 
 document.getElementById('btnHitKill').addEventListener('click', () => {
-    aplicarPreset((save) => {
-        if(save.hasOwnProperty('nailDamage')) save.nailDamage = 9999;
-    });
+    let texto = manualEditor.value;
+    texto = texto.replace(/"nailDamage":\s*\d+/g, '"nailDamage": 9999');
+    manualEditor.value = texto;
+    alert("Hit Kill ativado! Pode conferir no texto.");
 });
 
 document.getElementById('btnVida').addEventListener('click', () => {
-    aplicarPreset((save) => {
-        if(save.hasOwnProperty('maxHealthBase')) save.maxHealthBase = 99;
-    });
+    let texto = manualEditor.value;
+    texto = texto.replace(/"maxHealthBase":\s*\d+/g, '"maxHealthBase": 99');
+    texto = texto.replace(/"maxHealth":\s*\d+/g, '"maxHealth": 99');
+    manualEditor.value = texto;
+    alert("Vida máxima ativada! Pode conferir no texto.");
 });
 
 document.getElementById('btnDinheiro').addEventListener('click', () => {
-    aplicarPreset((save) => {
-        if(save.hasOwnProperty('geo')) save.geo = 9999999;
-    });
+    let texto = manualEditor.value;
+    texto = texto.replace(/"geo":\s*\d+/g, '"geo": 9999999');
+    manualEditor.value = texto;
+    alert("Geo Infinito ativado! Pode conferir no texto.");
 });
 
 // 3. BOTÃO DE RESET
 document.getElementById('btnReset').addEventListener('click', () => {
-    if(confirm("Tem certeza? Isso vai desfazer TODAS as edições e voltar ao save original que você upou.")) {
+    if(confirm("Tem certeza? Isso vai voltar ao save original.")) {
         manualEditor.value = dgSaveOriginalTexto;
     }
 });
@@ -96,19 +90,25 @@ document.getElementById('btnReset').addEventListener('click', () => {
 // 4. DOWNLOADS
 document.getElementById('btnDownTexto').addEventListener('click', () => {
     try {
-        JSON.parse(manualEditor.value); 
+        JSON.parse(manualEditor.value); // Só testa se não tá quebrado
         DownloadData(manualEditor.value, dgFileName + ".txt");
     } catch (e) {
-        alert("❌ Erro no JSON. Você apagou alguma aspa ou vírgula no editor.");
+        alert("❌ Erro de sintaxe. Você apagou aspas ou vírgula sem querer.");
     }
 });
 
 document.getElementById('btnDownJogo').addEventListener('click', () => {
     try {
-        JSON.parse(manualEditor.value); 
-        const novosBytes = Encode(manualEditor.value); 
+        // Pega o texto da telinha que você viu mudar
+        const objetoLimpo = JSON.parse(manualEditor.value); 
+        
+        // Espreme ele (tira as quebras de linha) porque o jogo é chato com formatação
+        const jsonMinificado = JSON.stringify(objetoLimpo); 
+        
+        // Criptografa e baixa
+        const novosBytes = Encode(jsonMinificado); 
         DownloadData(novosBytes, dgFileName);
     } catch (e) {
-        alert("❌ Erro no JSON. Corrija o texto antes de criptografar para o jogo.");
+        alert("❌ Erro de sintaxe no texto. Não dá pra gerar o save.");
     }
 });
