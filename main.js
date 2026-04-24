@@ -3,9 +3,12 @@ import { Decode, Encode, DownloadData } from './functions.js';
 let dgSaveOriginalTexto = ""; 
 let dgFileName = "user1.dat";
 
-const listaHabilidades = [
-    'hasDash', 'hasWalljump', 'hasSuperDash', 
-    'hasDoubleJump', 'hasAcidArmour', 'hasDreamNail', 'hasShadowDash'
+const listaHabilidadesBooleans = [
+    'hasDash', 'hasWalljump', 'hasSuperDash', 'hasDoubleJump', 
+    'hasAcidArmour', 'hasDreamNail', 'hasShadowDash',
+    'hasSpell1', 'hasNailArt', 'hasCyclone', 'hasDashSlash', 
+    'hasUpwardSlash', 'hasAllNailArts',
+    'canDash', 'canBackDash', 'canWallJump', 'canSuperDash', 'canShadowDash'
 ];
 
 const fileInput = document.getElementById('fileInput');
@@ -13,7 +16,6 @@ const statusText = document.getElementById('status');
 const editorBox = document.getElementById('editorBox');
 const manualEditor = document.getElementById('manualEditor');
 
-// 1. SINCRONIZAÇÃO EM TEMPO REAL (As cores que já estão funcionando)
 function sincronizarBotoes() {
     try {
         const data = JSON.parse(manualEditor.value);
@@ -56,19 +58,18 @@ function sincronizarBotoes() {
         }
 
         const btnHab = document.getElementById('btnHabilidades');
-        const temHab = listaHabilidades.some(h => pData[h] === true);
+        const temHab = pData.fireballLevel === 2 || pData.hasAllNailArts === true;
         if (temHab) {
             btnHab.className = "btn-reset";
-            btnHab.innerText = "🔄 Reverter Habilidades";
+            btnHab.innerText = "🔄 Reverter Habilidades/Magias";
         } else {
             btnHab.className = "btn-preset";
-            btnHab.innerText = "✨ Todas Habilidades";
+            btnHab.innerText = "✨ Hab. + Magias FULL";
         }
 
-    } catch (e) { /* Ignora erro enquanto digita */ }
+    } catch (e) {}
 }
 
-// 2. LER ARQUIVO
 fileInput.addEventListener('change', async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -95,37 +96,35 @@ fileInput.addEventListener('change', async (event) => {
 
 manualEditor.addEventListener('input', sincronizarBotoes);
 
-// 3. APLICAÇÃO BRUTA DOS VALORES (Sem Cookies)
 function aplicarMudanca(callback) {
     try {
         let save = JSON.parse(manualEditor.value);
         let pData = save.playerData ? save.playerData : save;
 
-        callback(pData); // Modifica os dados
+        callback(pData); 
 
         manualEditor.value = JSON.stringify(save, null, 2);
-        sincronizarBotoes(); // Atualiza a cor do botão na hora
+        sincronizarBotoes(); 
     } catch (e) {
         alert("❌ Erro no JSON! Conserte as vírgulas ou aspas antes de clicar.");
     }
 }
 
-// BOTÕES COM VALORES FIXOS DA BASE
 document.getElementById('btnDinheiro').addEventListener('click', () => {
     aplicarMudanca((p) => {
-        if (p.geo > 50000) p.geo = 100; // Valor Base
-        else p.geo = 9999999;           // Cheat
+        if (p.geo > 50000) p.geo = 100; 
+        else p.geo = 9999999;           
     });
 });
 
 document.getElementById('btnVida').addEventListener('click', () => {
     aplicarMudanca((p) => {
         if (p.maxHealthBase > 20) {
-            p.maxHealthBase = 5; // Valores Base
+            p.maxHealthBase = 5; 
             p.maxHealth = 5;
             p.health = 5;
         } else {
-            p.maxHealthBase = 999; // Cheat
+            p.maxHealthBase = 999; 
             p.maxHealth = 999;
             p.health = 999;
         }
@@ -134,20 +133,24 @@ document.getElementById('btnVida').addEventListener('click', () => {
 
 document.getElementById('btnHitKill').addEventListener('click', () => {
     aplicarMudanca((p) => {
-        if (p.nailDamage >= 2500) p.nailDamage = 5; // Valor Base
-        else p.nailDamage = 2500;                   // Cheat
+        if (p.nailDamage >= 2500) p.nailDamage = 5; 
+        else p.nailDamage = 2500;                   
     });
 });
 
 document.getElementById('btnHabilidades').addEventListener('click', () => {
     aplicarMudanca((p) => {
-        const temHab = listaHabilidades.some(h => p[h] === true);
+        const temHab = p.fireballLevel === 2 || p.hasAllNailArts === true;
         if (temHab) {
-            // Reverter (Desliga tudo)
-            listaHabilidades.forEach(h => p[h] = false);
+            listaHabilidadesBooleans.forEach(h => p[h] = false);
+            p.fireballLevel = 0;
+            p.quakeLevel = 0;
+            p.screamLevel = 0;
         } else {
-            // Cheat (Liga tudo)
-            listaHabilidades.forEach(h => p[h] = true);
+            listaHabilidadesBooleans.forEach(h => p[h] = true);
+            p.fireballLevel = 2;
+            p.quakeLevel = 2;
+            p.screamLevel = 2;
         }
     });
 });
@@ -155,7 +158,6 @@ document.getElementById('btnHabilidades').addEventListener('click', () => {
 document.getElementById('btnAmuletos').addEventListener('click', () => {
     aplicarMudanca((p) => {
         if (p.charmCost_1 === 0) {
-            // REVERTER BRUTO: Tira tudo de você e reseta o custo
             for(let i=1; i<=40; i++) {
                 p[`gotCharm_${i}`] = false;
                 p[`equippedCharm_${i}`] = false;
@@ -166,11 +168,10 @@ document.getElementById('btnAmuletos').addEventListener('click', () => {
             p.fragileGreed_unbreakable = false;
             p.fragileStrength_unbreakable = false;
         } else {
-            // APLICAR CHEAT
             for(let i=1; i<=40; i++) {
-                p[`equippedCharm_${i}`] = false; // Desequipa tudo
+                p[`equippedCharm_${i}`] = false; 
                 if (i === 2) {
-                    p[`gotCharm_${i}`] = false; // Bloqueia Bússola
+                    p[`gotCharm_${i}`] = false; 
                 } else {
                     p[`gotCharm_${i}`] = true;
                     p[`newCharm_${i}`] = false;
@@ -185,7 +186,6 @@ document.getElementById('btnAmuletos').addEventListener('click', () => {
     });
 });
 
-// 4. RESET GERAL E DOWNLOAD
 document.getElementById('btnReset').addEventListener('click', () => {
     if(confirm("Deseja resetar tudo para o original do arquivo que você upou?")) {
         manualEditor.value = dgSaveOriginalTexto;
