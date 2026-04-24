@@ -2,8 +2,8 @@
 
 This project was inspired by and based on existing tools from the Hollow Knight modding community.
 
-- Original save editor: based on the project by bloodorca
-- Encryption/decryption system: based on Hollow Knight Save Manager by KayDeeTee
+- Original save editor: based on the project by @bloodorca
+- Encryption/decryption system: based on Hollow Knight Save Manager by @KayDeeTee
 
 # Modifications Made by Me
 
