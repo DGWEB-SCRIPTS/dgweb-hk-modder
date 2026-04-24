@@ -26,7 +26,20 @@ body {
 header { text-align: center; margin-bottom: 30px; }
 header h1 { color: #f0f6fc; font-size: 1.8rem; margin-bottom: 5px; }
 .brand { font-size: 0.9rem; color: #8b949e; }
-.brand span { color: #58a6ff; font-weight: bold; }
+
+/* --- CORES DOS LINKS DA DGWEB DEV --- */
+.brand a, footer a {
+    color: #58a6ff; /* Azul claro legível perfeito para modo escuro */
+    font-weight: bold;
+    text-decoration: none; /* Tira o sublinhado padrão */
+    transition: color 0.2s ease-in-out;
+}
+
+/* Cor quando passa o dedo/mouse por cima */
+.brand a:hover, footer a:hover {
+    color: #79c0ff; /* Fica um azul ainda mais brilhante */
+    text-decoration: underline;
+}
 
 .upload-section {
     text-align: center;
@@ -103,3 +116,11 @@ textarea:focus { border-color: #58a6ff; }
 .btn-down { flex: 1; font-size: 1rem; padding: 15px; }
 .btn-down.text { background-color: #30363d; }
 .btn-down.crypt { background-color: #1f6feb; }
+
+/* Rodapé centralizado com margem */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: #8b949e;
+}
