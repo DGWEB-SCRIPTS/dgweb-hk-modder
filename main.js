@@ -186,14 +186,6 @@ document.getElementById('btnAmuletos').addEventListener('click', () => {
     });
 });
 
-document.getElementById('btnReset').addEventListener('click', () => {
-    if(confirm("Deseja resetar tudo para o original do arquivo que você upou?")) {
-        manualEditor.value = dgSaveOriginalTexto;
-        sincronizarBotoes();
-        alert("✅ Arquivo resetado para o original com sucesso!");
-    }
-});
-
 document.getElementById('btnDownTexto').addEventListener('click', () => {
     try {
         JSON.parse(manualEditor.value); 
