@@ -54,7 +54,7 @@ function sincronizarBotoes() {
             btnAmu.innerText = "🔄 Reverter Amuletos";
         } else {
             btnAmu.className = "btn-preset";
-            btnAmu.innerText = "📿 Amuletos (Sem Bússola)";
+            btnAmu.innerText = "📿 Todos os Amuletos";
         }
 
         const btnHab = document.getElementById('btnHabilidades');
@@ -170,12 +170,11 @@ document.getElementById('btnAmuletos').addEventListener('click', () => {
         } else {
             for(let i=1; i<=40; i++) {
                 p[`equippedCharm_${i}`] = false; 
-                if (i === 2) {
-                    p[`gotCharm_${i}`] = false; 
-                } else {
+                p[`charmCost_${i}`] = 0; 
+                
+                if (i !== 2) {
                     p[`gotCharm_${i}`] = true;
                     p[`newCharm_${i}`] = false;
-                    p[`charmCost_${i}`] = 0;
                 }
             }
             p.charmSlots = 11;
