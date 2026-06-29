@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DgWeb Dev - Hollow Knight Save Modder</title>
+    <title>DGWEB DEV - Hollow Knight Save Modder</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,20 +11,22 @@
     <div class="main-container">
         <header>
             <h1>Hollow Knight Save Modder</h1>
-            <p class="brand">Desenvolvido por <a href="https://github.com/DGWEB-SCRIPTS" target="_blank">DgWeb Dev</a></p>
+            <p class="brand">Desenvolvido por <a href="https://github.com/DGWEB-SCRIPTS" target="_blank">DGWEB DEV</a></p>
         </header>
         
         <section class="upload-section">
             <label for="fileInput" class="custom-file-upload">
-                📁 Selecionar Save (user1.dat)
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                Selecionar Save (user1.dat)
             </label>
             <input type="file" id="fileInput" accept=".dat" />
             <p id="status">Aguardando importação do arquivo...</p>
         </section>
 
         <div id="editorBox" class="hidden">
-            <div class="preset-container">
-                <h3>Painel de Controle (Presets)</h3>
+            <div class="panel">
+                <h3>⚡ Ações Rápidas</h3>
+                <p class="helper-text">Modificações instantâneas no save.</p>
                 <div class="grid-botoes">
                     <button class="btn-preset" id="btnAmuletos">📿 Todos os Amuletos</button>
                     <button class="btn-preset" id="btnHabilidades">✨ Todas Habilidades</button>
@@ -34,22 +36,66 @@
                 </div>
             </div>
 
-            <div class="manual-section">
-                <h3>Editor Manual (JSON)</h3>
-                <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">
-                    Os botões acima modificam o código abaixo em tempo real.
-                </p>
-                <textarea id="manualEditor" spellcheck="false"></textarea>
+            <button id="btnToggleAdvanced" class="btn-outline">
+                ⚙️ Configuração Completa
+            </button>
+
+            <div id="advancedEditor" class="hidden panel no-padding">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="tab-recursos">Recursos</button>
+                    <button class="tab-btn" data-tab="tab-habilidades">Habilidades</button>
+                    <button class="tab-btn" data-tab="tab-amuletos">Amuletos</button>
+                    <button class="tab-btn" data-tab="tab-json">JSON Bruto</button>
+                </div>
+
+                <div class="tab-content active" id="tab-recursos">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>💰 Geo (Dinheiro)</label>
+                            <input type="number" id="inpGeo" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label>❤️ Vida Máxima (Base)</label>
+                            <input type="number" id="inpVida" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label>🗡️ Dano do Ferrão</label>
+                            <input type="number" id="inpDano" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label>📿 Espaços de Amuletos (Máx 11)</label>
+                            <input type="number" id="inpCharmSlots" min="1" max="11">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-habilidades">
+                    <div class="skills-grid" id="skillsContainer">
+                        </div>
+                </div>
+
+                <div class="tab-content" id="tab-amuletos">
+                    <div class="search-container">
+                        <input type="text" id="searchAmuletos" class="search-bar" placeholder="🔍 Pesquisar amuleto por nome...">
+                    </div>
+                    <div class="charms-grid" id="charmsContainer">
+                        </div>
+                </div>
+
+                <div class="tab-content" id="tab-json">
+                    <p class="helper-text" style="margin-bottom: 10px;">⚠️ Edições manuais refletirão nos botões acima. Cuidado com erros de sintaxe.</p>
+                    <textarea id="manualEditor" spellcheck="false"></textarea>
+                </div>
             </div>
 
             <div class="download-section">
-                <button class="btn-down text" id="btnDownTexto">📄 Baixar Texto Puro (.txt)</button>
-                <button class="btn-down crypt" id="btnDownJogo">💾 Baixar para o Jogo (.dat)</button>
+                <button class="btn-down text" id="btnDownTexto">📄 Baixar .TXT Seguro</button>
+                <button class="btn-down crypt" id="btnDownJogo">💾 Exportar para o Jogo (.DAT)</button>
             </div>
         </div>
         
         <footer>
-            &copy; 2026 DgWeb Dev. Todos os direitos reservados.
+            &copy; 2026 DGWEB DEV. Todos os direitos reservados.
         </footer>
     </div>
 
