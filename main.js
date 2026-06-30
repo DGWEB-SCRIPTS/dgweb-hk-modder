@@ -47,28 +47,75 @@ const itensMap = [
     { type: 'bool', key: 'hasWhiteKey', label: 'Chave Elegante' },
     { type: 'bool', key: 'hasLoveKey', label: 'Chave do Amor' },
     { type: 'bool', key: 'hasTramPass', label: 'Passe do Bonde' },
-    { type: 'bool', key: 'hasLantern', label: 'Lanterna de Lumafly' }
+    { type: 'bool', key: 'hasLantern', label: 'Lanterna de Lumafly' },
+    { type: 'bool', key: 'hasGodfinder', label: 'Afinador de Deuses (Godhome)' },
+    
+    // Pinos de Mapa
+    { type: 'bool', key: 'hasPinBench', label: 'Pino de Mapa: Bancos' },
+    { type: 'bool', key: 'hasPinCocoon', label: 'Pino de Mapa: Casulos' },
+    { type: 'bool', key: 'hasPinDreamPlant', label: 'Pino de Mapa: Raízes' },
+    { type: 'bool', key: 'hasPinGhost', label: 'Pino de Mapa: Guerreiros' },
+    { type: 'bool', key: 'hasPinShop', label: 'Pino de Mapa: Lojas' },
+    { type: 'bool', key: 'hasPinSpa', label: 'Pino de Mapa: Fontes Termais' },
+    { type: 'bool', key: 'hasPinStag', label: 'Pino de Mapa: Estações' },
+    { type: 'bool', key: 'hasPinTram', label: 'Pino de Mapa: Bondes' },
+
+    // Mapas das Regiões
+    { type: 'bool', key: 'mapDirtmouth', label: 'Mapa: Dirtmouth' },
+    { type: 'bool', key: 'mapCrossroads', label: 'Mapa: Encruzilhada Esquecida' },
+    { type: 'bool', key: 'mapGreenpath', label: 'Mapa: Caminho Verde' },
+    { type: 'bool', key: 'mapFogCanyon', label: 'Mapa: Cânion Névoa' },
+    { type: 'bool', key: 'mapRoyalGardens', label: 'Mapa: Jardins da Rainha' },
+    { type: 'bool', key: 'mapFungalWastes', label: 'Mapa: Ermos Fúngicos' },
+    { type: 'bool', key: 'mapCity', label: 'Mapa: Cidade das Lágrimas' },
+    { type: 'bool', key: 'mapWaterways', label: 'Mapa: Hidrovias Reais' },
+    { type: 'bool', key: 'mapMines', label: 'Mapa: Pico de Cristal' },
+    { type: 'bool', key: 'mapDeepnest', label: 'Mapa: Ninho Profundo' },
+    { type: 'bool', key: 'mapCliffs', label: 'Mapa: Penhascos Uivantes' },
+    { type: 'bool', key: 'mapOutskirts', label: 'Mapa: Borda das Cinzas' },
+    { type: 'bool', key: 'mapRestingGrounds', label: 'Mapa: Terras do Repouso' },
+    { type: 'bool', key: 'mapAbyss', label: 'Mapa: O Abismo' }
 ];
 
 const historiaMap = [
     { type: 'select', key: 'permadeathMode', label: 'Modo de Jogo', options: [{val: 0, text: 'Normal'}, {val: 1, text: 'Alma de Aço (PermaDeath)'}, {val: 2, text: 'Alma de Aço Concluído'}] },
-    { type: 'bool', key: 'falseKnightDefeated', label: 'Falso Cavaleiro Derrotado' },
-    { type: 'bool', key: 'hornet1Defeated', label: 'Hornet (Caminho Verde) Derrotada' },
-    { type: 'bool', key: 'hornetOutskirtsDefeated', label: 'Hornet (Borda das Cinzas) Derrotada' },
-    { type: 'bool', key: 'mawlekDefeated', label: 'Mawlek Incubador Derrotado' },
-    { type: 'bool', key: 'defeatedMantisLords', label: 'Lordes Louva-a-Deus Derrotados' },
-    { type: 'bool', key: 'defeatedDungDefender', label: 'Defensor do Esterco Derrotado' },
-    { type: 'bool', key: 'mageLordDefeated', label: 'Mestre das Almas Derrotado' },
-    { type: 'bool', key: 'monomonDefeated', label: 'Sonhadora: Monomon (Morto)' },
+    
+    // Sonhadores
+    { type: 'bool', key: 'monomonDefeated', label: 'Sonhadora: Monomon (Morta)' },
     { type: 'bool', key: 'lurienDefeated', label: 'Sonhador: Lurien (Morto)' },
-    { type: 'bool', key: 'hegemolDefeated', label: 'Sonhadora: Herrah (Morto)' },
-    { type: 'bool', key: 'killedHollowKnight', label: 'O Cavaleiro Vazio Derrotado' },
+    { type: 'bool', key: 'hegemolDefeated', label: 'Sonhadora: Herrah (Morta)' },
+    
+    // Chefes
+    { type: 'bool', key: 'falseKnightDefeated', label: 'Chefe: Falso Cavaleiro' },
+    { type: 'bool', key: 'hornet1Defeated', label: 'Chefe: Hornet (Caminho Verde)' },
+    { type: 'bool', key: 'hornetOutskirtsDefeated', label: 'Chefe: Hornet (Borda das Cinzas)' },
+    { type: 'bool', key: 'mawlekDefeated', label: 'Chefe: Mawlek Incubador' },
+    { type: 'bool', key: 'defeatedMantisLords', label: 'Chefe: Lordes Louva-a-Deus' },
+    { type: 'bool', key: 'defeatedDungDefender', label: 'Chefe: Defensor do Esterco' },
+    { type: 'bool', key: 'mageLordDefeated', label: 'Chefe: Mestre das Almas' },
+    { type: 'bool', key: 'giantBuzzerDefeated', label: 'Chefe: Mãe Gruz' },
+    { type: 'bool', key: 'megaMossChargerDefeated', label: 'Chefe: Musgo Carregador' },
+    { type: 'bool', key: 'flukeMotherDefeated', label: 'Chefe: Mãe Fluke' },
+    { type: 'bool', key: 'brokenVesselDefeated', label: 'Chefe: Receptáculo Quebrado' },
+    { type: 'bool', key: 'infectedKnightDefeated', label: 'Chefe: Parente Perdido' },
+    { type: 'bool', key: 'collectorDefeated', label: 'Chefe: O Colecionador' },
+    { type: 'bool', key: 'noskDefeated', label: 'Chefe: Nosk' },
+    { type: 'bool', key: 'zoteDefeated', label: 'Chefe: Príncipe Cinza Zote' },
+    { type: 'bool', key: 'whiteDefenderDefeated', label: 'Chefe: Defensor Branco' },
+    { type: 'bool', key: 'grimmDefeated', label: 'Chefe: Mestre da Trupe Grimm' },
+    { type: 'bool', key: 'nightmareGrimmDefeated', label: 'Chefe: Rei do Pesadelo Grimm' },
+    { type: 'bool', key: 'radianceDefeated', label: 'Chefe: A Radiância' },
+    { type: 'bool', key: 'killedHollowKnight', label: 'Chefe: O Cavaleiro Vazio' },
+
+    // Coliseu e Panteões
     { type: 'bool', key: 'colosseumBronzeCompleted', label: 'Coliseu: Prova do Guerreiro' },
     { type: 'bool', key: 'colosseumSilverCompleted', label: 'Coliseu: Prova do Conquistador' },
-    { type: 'bool', key: 'colosseumGoldCompleted', label: 'Coliseu: Prova do Tolo' }
+    { type: 'bool', key: 'colosseumGoldCompleted', label: 'Coliseu: Prova do Tolo' },
+    { type: 'bool', key: 'visitedGodhome', label: 'Acesso ao Lar dos Deuses Liberado' }
 ];
 
 const mundoMap = [
+    // Estações de Besouro
     { type: 'bool', key: 'openedTown', label: 'Estação: Dirtmouth' },
     { type: 'bool', key: 'openedCrossroads', label: 'Estação: Encruzilhada' },
     { type: 'bool', key: 'openedGreenpath', label: 'Estação: Caminho Verde' },
@@ -80,9 +127,11 @@ const mundoMap = [
     { type: 'bool', key: 'openedDeepnest', label: 'Estação: Ninho Profundo' },
     { type: 'bool', key: 'openedHiddenStation', label: 'Estação: Estação Oculta' },
     { type: 'bool', key: 'openedStagNest', label: 'Estação: Ninho dos Besouros' },
-    { type: 'bool', key: 'zoteDead', label: 'Zote Morto' },
-    { type: 'bool', key: 'nailsmithKilled', label: 'Ferreiro Morto' },
-    { type: 'bool', key: 'nailsmithSpared', label: 'Ferreiro Poupado' }
+    
+    // NPCs e Ações Mundiais
+    { type: 'bool', key: 'zoteDead', label: 'NPC: Zote Morto' },
+    { type: 'bool', key: 'nailsmithKilled', label: 'NPC: Ferreiro Morto' },
+    { type: 'bool', key: 'nailsmithSpared', label: 'NPC: Ferreiro Poupado' }
 ];
 
 // ==========================================
@@ -110,6 +159,7 @@ const inpEggs = document.getElementById('inpEggs');
 const inpMaskFrag = document.getElementById('inpMaskFrag');
 const inpVesselFrag = document.getElementById('inpVesselFrag');
 const inpGrubs = document.getElementById('inpGrubs');
+const selNailLevel = document.getElementById('selNailLevel');
 
 const skillsContainer = document.getElementById('skillsContainer');
 const charmsContainer = document.getElementById('charmsContainer');
@@ -226,6 +276,13 @@ function initAdvancedUI() {
                 pData[key] = e.target.checked;
             } else if (e.target.tagName === 'SELECT') {
                 pData[key] = parseInt(e.target.value) || 0;
+                
+                // Ajusta automaticamente o dano do ferrão baseado no nível selecionado
+                if(key === 'nailSmithUpgrades') {
+                    const danos = [5, 9, 13, 17, 21];
+                    pData['nailDamage'] = danos[parseInt(e.target.value)];
+                    if (inpDano) inpDano.value = pData['nailDamage']; // Atualiza o visual
+                }
             }
             
             manualEditor.value = JSON.stringify(currentSaveObj, null, 2);
@@ -249,6 +306,14 @@ function syncUI() {
         togglePresetBtn('btnAmuletos', pData.charmCost_1 === 0, "🔄 Reverter Amuletos", "📿 Todos os Amuletos");
         const temHab = pData.fireballLevel === 2 || pData.hasDash === true;
         togglePresetBtn('btnHabilidades', temHab, "🔄 Reverter Habilidades", "✨ Todas as Habilidades");
+        
+        // Feedback Visual dos Novos Presets
+        togglePresetBtn('btnMapas', pData.hasMap === true && pData.mapDirtmouth === true, "🔄 Reverter Mapas", "🗺️ 100% Mapas & Pinos");
+        togglePresetBtn('btnEstacoes', pData.openedTown === true && pData.openedCrossroads === true, "🔄 Reverter Estações", "🪲 Todas Estações");
+        togglePresetBtn('btnPanteoes', pData.visitedGodhome === true && pData.hasGodfinder === true, "🔄 Reverter Panteões", "🏆 Panteões Completos");
+        
+        togglePresetBtn('btnLarvas', pData.grubsCollected === 46, "🔄 Reverter Larvas", "🐛 Todas as Larvas");
+        togglePresetBtn('btnChefes', pData.killedHollowKnight === true && pData.zoteDead === true, "🔄 Reverter Chefes/NPCs", "💀 Derrotar Chefes/NPCs");
 
         // Sync Numéricos
         inpGeo.value = pData.geo || 0;
@@ -370,6 +435,59 @@ document.getElementById('btnHabilidades').addEventListener('click', () => {
         habilidadesMap.forEach(h => p[h.key] = !temHab);
         feitiçosMap.forEach(h => p[h.key] = temHab ? 0 : 2);
         ['canDash', 'canBackDash', 'canWallJump', 'canSuperDash', 'canShadowDash', 'hasAllNailArts'].forEach(k => p[k] = !temHab);
+    });
+});
+
+document.getElementById('btnMapas').addEventListener('click', () => {
+    aplicarMudanca((p) => {
+        const mapas = ['mapDirtmouth', 'mapCrossroads', 'mapGreenpath', 'mapFogCanyon', 'mapRoyalGardens', 'mapFungalWastes', 'mapCity', 'mapWaterways', 'mapMines', 'mapDeepnest', 'mapCliffs', 'mapOutskirts', 'mapRestingGrounds', 'mapAbyss', 'hasMap', 'hasQuill', 'hasPinBench', 'hasPinCocoon', 'hasPinDreamPlant', 'hasPinGhost', 'hasPinShop', 'hasPinSpa', 'hasPinStag', 'hasPinTram'];
+        const ativar = !p.hasMap; 
+        mapas.forEach(m => p[m] = ativar);
+    });
+});
+
+document.getElementById('btnEstacoes').addEventListener('click', () => {
+    aplicarMudanca((p) => {
+        const estacoes = ['openedTown', 'openedCrossroads', 'openedGreenpath', 'openedRuins1', 'openedRuins2', 'openedFungalWastes', 'openedRoyalGardens', 'openedRestingGrounds', 'openedDeepnest', 'openedHiddenStation', 'openedStagNest'];
+        const ativar = !p.openedTown;
+        estacoes.forEach(e => p[e] = ativar);
+    });
+});
+
+document.getElementById('btnPanteoes').addEventListener('click', () => {
+    aplicarMudanca((p) => {
+        const ativar = !p.visitedGodhome;
+        // Estrutura segura que o jogo usa para registrar conclusão de Panteões
+        const objState = ativar ? {"canUnlock":true,"unlocked":true,"completed":true,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false} : {"canUnlock":false,"unlocked":false,"completed":false,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false};
+        
+        p.bossDoorStateTier1 = objState;
+        p.bossDoorStateTier2 = objState;
+        p.bossDoorStateTier3 = objState;
+        p.bossDoorStateTier4 = objState;
+        p.bossDoorStateTier5 = objState;
+        p.hasGodfinder = ativar;
+        p.visitedGodhome = ativar;
+    });
+});
+
+document.getElementById('btnLarvas').addEventListener('click', () => {
+    aplicarMudanca((p) => {
+        p.grubsCollected = p.grubsCollected === 46 ? 0 : 46;
+    });
+});
+
+document.getElementById('btnChefes').addEventListener('click', () => {
+    aplicarMudanca((p) => {
+        const ativar = !p.killedHollowKnight; 
+        const chefesENpcs = [
+            'falseKnightDefeated', 'hornet1Defeated', 'hornetOutskirtsDefeated', 'mawlekDefeated',
+            'defeatedMantisLords', 'defeatedDungDefender', 'mageLordDefeated', 'giantBuzzerDefeated',
+            'megaMossChargerDefeated', 'flukeMotherDefeated', 'brokenVesselDefeated', 'infectedKnightDefeated',
+            'collectorDefeated', 'noskDefeated', 'zoteDefeated', 'whiteDefenderDefeated', 'grimmDefeated',
+            'nightmareGrimmDefeated', 'radianceDefeated', 'killedHollowKnight', 'monomonDefeated',
+            'lurienDefeated', 'hegemolDefeated', 'zoteDead', 'nailsmithKilled'
+        ];
+        chefesENpcs.forEach(c => p[c] = ativar);
     });
 });
 
