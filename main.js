@@ -300,7 +300,8 @@ function syncUI() {
         const pData = currentSaveObj.playerData ? currentSaveObj.playerData : currentSaveObj;
 
         // Feedback Visual dos Presets
-        togglePresetBtn('btnDinheiro', pData.geo > 50000, "🔄 Reverter Dinheiro", "💰 Geo Infinito");
+        togglePresetBtn('btn112', pData.geo === 999999 && pData.grubsCollected === 46 && pData.nailSmithUpgrades === 4, "🔄 Reverter 112%", "🏆 112% Absoluto");
+        togglePresetBtn('btnDinheiro', pData.geo > 50000 && pData.geo !== 999999, "🔄 Reverter Dinheiro", "💰 Geo Infinito");
         togglePresetBtn('btnVida', pData.maxHealthBase > 20, "🔄 Reverter Vida", "❤️ Vida Máxima");
         togglePresetBtn('btnHitKill', pData.nailDamage >= 2500, "🔄 Reverter Dano", "🗡️ Golpe Fatal");
         togglePresetBtn('btnAmuletos', pData.charmCost_1 === 0, "🔄 Reverter Amuletos", "📿 Todos os Amuletos");
@@ -417,6 +418,72 @@ searchAmuletos.addEventListener('input', (e) => {
 // ==========================================
 // LÓGICA DOS PRESETS (Ações Rápidas)
 // ==========================================
+document.getElementById('btn112').addEventListener('click', () => {
+    aplicarMudanca((p) => {
+        const ativar = p.geo !== 999999;
+        
+        // Atributos Máximos Absolutos (Lore 112%)
+        p.geo = ativar ? 999999 : 100;
+        p.maxHealthBase = p.maxHealth = p.health = ativar ? 9 : 5;
+        p.soulVesselUpgrades = ativar ? 3 : 0;
+        p.maxSoulCap = ativar ? 99 : 0;
+        p.nailSmithUpgrades = ativar ? 4 : 0;
+        p.nailDamage = ativar ? 21 : 5;
+        p.dreamOrbs = ativar ? 3000 : 0;
+        p.grubsCollected = ativar ? 46 : 0;
+        p.charmSlots = ativar ? 11 : 3;
+        p.heartPieces = ativar ? 0 : 0;
+        p.vesselFragments = ativar ? 0 : 0;
+        
+        // Habilidades e Artes da Unha
+        habilidadesMap.forEach(h => p[h.key] = ativar);
+        feitiçosMap.forEach(h => p[h.key] = ativar ? 2 : 0);
+        ['canDash', 'canBackDash', 'canWallJump', 'canSuperDash', 'canShadowDash', 'hasAllNailArts'].forEach(k => p[k] = ativar);
+        
+        // Mapas Completos sem Névoa & Pinos
+        const mapas = ['mapDirtmouth', 'mapCrossroads', 'mapGreenpath', 'mapFogCanyon', 'mapRoyalGardens', 'mapFungalWastes', 'mapCity', 'mapWaterways', 'mapMines', 'mapDeepnest', 'mapCliffs', 'mapOutskirts', 'mapRestingGrounds', 'mapAbyss', 'hasMap', 'hasQuill', 'hasPinBench', 'hasPinCocoon', 'hasPinDreamPlant', 'hasPinGhost', 'hasPinShop', 'hasPinSpa', 'hasPinStag', 'hasPinTram'];
+        mapas.forEach(m => p[m] = ativar);
+        
+        // Estações de Fast Travel
+        const estacoes = ['openedTown', 'openedCrossroads', 'openedGreenpath', 'openedRuins1', 'openedRuins2', 'openedFungalWastes', 'openedRoyalGardens', 'openedRestingGrounds', 'openedDeepnest', 'openedHiddenStation', 'openedStagNest'];
+        estacoes.forEach(e => p[e] = ativar);
+        
+        // Amuletos 100% Custo Zero & Inquebráveis
+        for(let i = 1; i <= 40; i++) {
+            if (i === 2) continue;
+            p[`equippedCharm_${i}`] = false;
+            p[`gotCharm_${i}`] = ativar;
+            p[`newCharm_${i}`] = false;
+            p[`charmCost_${i}`] = ativar ? 0 : 1;
+        }
+        p.fragileHealth_unbreakable = p.fragileGreed_unbreakable = p.fragileStrength_unbreakable = ativar;
+        p.royalCharmState = ativar ? 4 : 0; 
+        p.grimmChildLevel = ativar ? 5 : 0;
+        
+        // Chefes, Sonhadores e NPCs Assassinados/Poupados Concluídos
+        const chefesENpcs = [
+            'falseKnightDefeated', 'hornet1Defeated', 'hornetOutskirtsDefeated', 'mawlekDefeated',
+            'defeatedMantisLords', 'defeatedDungDefender', 'mageLordDefeated', 'giantBuzzerDefeated',
+            'megaMossChargerDefeated', 'flukeMotherDefeated', 'brokenVesselDefeated', 'infectedKnightDefeated',
+            'collectorDefeated', 'noskDefeated', 'zoteDefeated', 'whiteDefenderDefeated', 'grimmDefeated',
+            'nightmareGrimmDefeated', 'radianceDefeated', 'killedHollowKnight', 'monomonDefeated',
+            'lurienDefeated', 'hegemolDefeated', 'zoteDead', 'nailsmithKilled', 'colosseumBronzeCompleted',
+            'colosseumSilverCompleted', 'colosseumGoldCompleted'
+        ];
+        chefesENpcs.forEach(c => p[c] = ativar);
+        
+        // Lar dos Deuses (Godhome) & Todos os 5 Panteões Concluídos
+        const objState = ativar ? {"canUnlock":true,"unlocked":true,"completed":true,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false} : {"canUnlock":false,"unlocked":false,"completed":false,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false};
+        p.bossDoorStateTier1 = objState;
+        p.bossDoorStateTier2 = objState;
+        p.bossDoorStateTier3 = objState;
+        p.bossDoorStateTier4 = objState;
+        p.bossDoorStateTier5 = objState;
+        p.hasGodfinder = ativar;
+        p.visitedGodhome = ativar;
+    });
+});
+
 document.getElementById('btnDinheiro').addEventListener('click', () => {
     aplicarMudanca(p => p.geo = (p.geo > 50000) ? 100 : 9999999);
 });
@@ -457,7 +524,6 @@ document.getElementById('btnEstacoes').addEventListener('click', () => {
 document.getElementById('btnPanteoes').addEventListener('click', () => {
     aplicarMudanca((p) => {
         const ativar = !p.visitedGodhome;
-        // Estrutura segura que o jogo usa para registrar conclusão de Panteões
         const objState = ativar ? {"canUnlock":true,"unlocked":true,"completed":true,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false} : {"canUnlock":false,"unlocked":false,"completed":false,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false};
         
         p.bossDoorStateTier1 = objState;
@@ -495,7 +561,7 @@ document.getElementById('btnAmuletos').addEventListener('click', () => {
     aplicarMudanca((p) => {
         const reverter = p.charmCost_1 === 0; 
         for(let i = 1; i <= 40; i++) {
-            if (i === 2) continue; // Mantém a Bússola intacta
+            if (i === 2) continue;
             p[`equippedCharm_${i}`] = false;
             if (!reverter) {
                 p[`gotCharm_${i}`] = true;
