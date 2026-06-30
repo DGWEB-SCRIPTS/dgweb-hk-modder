@@ -79,39 +79,67 @@ const itensMap = [
 
 const historiaMap = [
     { type: 'select', key: 'permadeathMode', label: 'Modo de Jogo', options: [{val: 0, text: 'Normal'}, {val: 1, text: 'Alma de Aço (PermaDeath)'}, {val: 2, text: 'Alma de Aço Concluído'}] },
-    
-    // Sonhadores
     { type: 'bool', key: 'monomonDefeated', label: 'Sonhadora: Monomon (Morta)' },
     { type: 'bool', key: 'lurienDefeated', label: 'Sonhador: Lurien (Morto)' },
-    { type: 'bool', key: 'hegemolDefeated', label: 'Sonhadora: Herrah (Morta)' },
-    
-    // Chefes
-    { type: 'bool', key: 'falseKnightDefeated', label: 'Chefe: Falso Cavaleiro' },
-    { type: 'bool', key: 'hornet1Defeated', label: 'Chefe: Hornet (Caminho Verde)' },
-    { type: 'bool', key: 'hornetOutskirtsDefeated', label: 'Chefe: Hornet (Borda das Cinzas)' },
-    { type: 'bool', key: 'mawlekDefeated', label: 'Chefe: Mawlek Incubador' },
-    { type: 'bool', key: 'defeatedMantisLords', label: 'Chefe: Lordes Louva-a-Deus' },
-    { type: 'bool', key: 'defeatedDungDefender', label: 'Chefe: Defensor do Esterco' },
-    { type: 'bool', key: 'mageLordDefeated', label: 'Chefe: Mestre das Almas' },
-    { type: 'bool', key: 'giantBuzzerDefeated', label: 'Chefe: Mãe Gruz' },
-    { type: 'bool', key: 'megaMossChargerDefeated', label: 'Chefe: Musgo Carregador' },
-    { type: 'bool', key: 'flukeMotherDefeated', label: 'Chefe: Mãe Fluke' },
-    { type: 'bool', key: 'brokenVesselDefeated', label: 'Chefe: Receptáculo Quebrado' },
-    { type: 'bool', key: 'infectedKnightDefeated', label: 'Chefe: Parente Perdido' },
-    { type: 'bool', key: 'collectorDefeated', label: 'Chefe: O Colecionador' },
-    { type: 'bool', key: 'noskDefeated', label: 'Chefe: Nosk' },
-    { type: 'bool', key: 'zoteDefeated', label: 'Chefe: Príncipe Cinza Zote' },
-    { type: 'bool', key: 'whiteDefenderDefeated', label: 'Chefe: Defensor Branco' },
-    { type: 'bool', key: 'grimmDefeated', label: 'Chefe: Mestre da Trupe Grimm' },
-    { type: 'bool', key: 'nightmareGrimmDefeated', label: 'Chefe: Rei do Pesadelo Grimm' },
-    { type: 'bool', key: 'radianceDefeated', label: 'Chefe: A Radiância' },
-    { type: 'bool', key: 'killedHollowKnight', label: 'Chefe: O Cavaleiro Vazio' },
+    { type: 'bool', key: 'hegemolDefeated', label: 'Sonhadora: Herrah (Morta)' }
+];
 
-    // Coliseu e Panteões
+const bossesPrincipaisMap = [
+    { type: 'bool', key: 'falseKnightDefeated', label: 'Falso Cavaleiro' },
+    { type: 'bool', key: 'falseKnightDreamDefeated', label: 'Falso Cavaleiro Falhado' },
+    { type: 'bool', key: 'hornet1Defeated', label: 'Hornet (Caminho Verde)' },
+    { type: 'bool', key: 'hornetOutskirtsDefeated', label: 'Hornet Sentinela (Borda das Cinzas)' },
+    { type: 'bool', key: 'mawlekDefeated', label: 'Mawlek Incubador' },
+    { type: 'bool', key: 'defeatedMantisLords', label: 'Lordes Louva-a-Deus' },
+    { type: 'bool', key: 'mageLordDefeated', label: 'Mestre das Almas' },
+    { type: 'bool', key: 'mageLordDreamDefeated', label: 'Tirano das Almas' },
+    { type: 'bool', key: 'defeatedDungDefender', label: 'Defensor do Esterco' },
+    { type: 'bool', key: 'whiteDefenderDefeated', label: 'Defensor Branco' },
+    { type: 'bool', key: 'giantBuzzerDefeated', label: 'Mãe Gruz' },
+    { type: 'bool', key: 'megaMossChargerDefeated', label: 'Musgo Carregador' },
+    { type: 'bool', key: 'flukeMotherDefeated', label: 'Mãe Fluke' },
+    { type: 'bool', key: 'brokenVesselDefeated', label: 'Receptáculo Quebrado' },
+    { type: 'bool', key: 'infectedKnightDefeated', label: 'Parente Perdido' },
+    { type: 'bool', key: 'collectorDefeated', label: 'O Colecionador' },
+    { type: 'bool', key: 'noskDefeated', label: 'Nosk' },
+    { type: 'bool', key: 'hornetNoskDefeated', label: 'Nosk Abissal' },
+    { type: 'bool', key: 'traitorLordDefeated', label: 'Senhor Traidor' },
+    { type: 'bool', key: 'hiveKnightDefeated', label: 'Cavaleiro da Colmeia' },
+    { type: 'bool', key: 'megaBeamMinerDefeated', label: 'Guardião de Cristal' },
+    { type: 'bool', key: 'megaBeamMiner2Defeated', label: 'Guardião de Cristal Enfurecido' },
+    { type: 'bool', key: 'grimmDefeated', label: 'Mestre da Trupe Grimm' },
+    { type: 'bool', key: 'nightmareGrimmDefeated', label: 'Rei do Pesadelo Grimm' },
+    { type: 'bool', key: 'killedHollowKnight', label: 'O Cavaleiro Vazio' },
+    { type: 'bool', key: 'radianceDefeated', label: 'Radiância' },
+    { type: 'bool', key: 'absoluteRadianceDefeated', label: 'Radiância Absoluta' }
+];
+
+const guerreirosSonhosMap = [
+    { type: 'bool', key: 'alubaDefeated', label: 'Gorb' },
+    { type: 'bool', key: 'xeroDefeated', label: 'Xero' },
+    { type: 'bool', key: 'huDefeated', label: 'Elder Hu' },
+    { type: 'bool', key: 'marmuDefeated', label: 'Marmu' },
+    { type: 'bool', key: 'galienDefeated', label: 'Galien' },
+    { type: 'bool', key: 'noEyesDefeated', label: 'No Eyes' },
+    { type: 'bool', key: 'markothDefeated', label: 'Markoth' }
+];
+
+const coliseuOpcionaisMap = [
+    { type: 'bool', key: 'zoteDefeated', label: 'Príncipe Cinza Zote' },
+    { type: 'bool', key: 'slyDefeated', label: 'Sly (Mestre do Ferrão)' },
+    { type: 'bool', key: 'oroMatoDefeated', label: 'Oro e Mato' },
+    { type: 'bool', key: 'sheoDefeated', label: 'Mestre da Pintura Sheo' },
     { type: 'bool', key: 'colosseumBronzeCompleted', label: 'Coliseu: Prova do Guerreiro' },
     { type: 'bool', key: 'colosseumSilverCompleted', label: 'Coliseu: Prova do Conquistador' },
-    { type: 'bool', key: 'colosseumGoldCompleted', label: 'Coliseu: Prova do Tolo' },
-    { type: 'bool', key: 'visitedGodhome', label: 'Acesso ao Lar dos Deuses Liberado' }
+    { type: 'bool', key: 'colosseumGoldCompleted', label: 'Coliseu: Prova do Tolo' }
+];
+
+const panteoesMap = [
+    { type: 'pantheon', key: 'bossDoorStateTier1', label: 'Panteão do Mestre' },
+    { type: 'pantheon', key: 'bossDoorStateTier2', label: 'Panteão do Artista' },
+    { type: 'pantheon', key: 'bossDoorStateTier3', label: 'Panteão do Sábio' },
+    { type: 'pantheon', key: 'bossDoorStateTier4', label: 'Panteão do Cavaleiro' },
+    { type: 'pantheon', key: 'bossDoorStateTier5', label: 'Panteão de Hallownest' }
 ];
 
 const mundoMap = [
@@ -197,6 +225,11 @@ function geradorBlocos(mapArray, container) {
                 <div class="title">${item.label}</div>
                 <select data-key="${item.key}" style="margin-top: 8px;">${optionsHtml}</select>
             `;
+        } else if (item.type === 'pantheon') {
+            div.innerHTML = `
+                <div class="title">${item.label}</div>
+                <label class="check-label"><input type="checkbox" data-key="${item.key}" data-type="pantheon"> Completado (100% Modos/Bindings)</label>
+            `;
         }
         container.appendChild(div);
     });
@@ -206,9 +239,13 @@ function initAdvancedUI() {
     // Gerar Habilidades e Feitiços combinados
     geradorBlocos([...habilidadesMap, ...feitiçosMap], skillsContainer);
     
-    // Gerar Itens, História e Mundo
+    // Gerar Itens, História, Chefes e Mundo
     geradorBlocos(itensMap, itemsContainer);
     geradorBlocos(historiaMap, storyContainer);
+    geradorBlocos(bossesPrincipaisMap, document.getElementById('bossesPrincipaisContainer'));
+    geradorBlocos(guerreirosSonhosMap, document.getElementById('guerreirosSonhosContainer'));
+    geradorBlocos(coliseuOpcionaisMap, document.getElementById('coliseuOpcionaisContainer'));
+    geradorBlocos(panteoesMap, document.getElementById('panteoesContainer'));
     geradorBlocos(mundoMap, worldContainer);
 
     // Gerar Amuletos com lógicas exclusivas (Inquebráveis, Kingsoul, Grimmchild)
@@ -273,7 +310,20 @@ function initAdvancedUI() {
                                
                 pData[mapKey] = parseFloat(e.target.value) || 0;
             } else if (e.target.type === 'checkbox') {
-                pData[key] = e.target.checked;
+                if (e.target.dataset.type === 'pantheon') {
+                    const ativar = e.target.checked;
+                    pData[key] = {
+                        "canUnlock": ativar, "unlocked": ativar, "completed": ativar,
+                        "allBindings": ativar, "boundNail": ativar, "boundShell": ativar,
+                        "boundCharms": ativar, "boundSoul": ativar
+                    };
+                    if (ativar) {
+                        pData.hasGodfinder = true;
+                        pData.visitedGodhome = true;
+                    }
+                } else {
+                    pData[key] = e.target.checked;
+                }
             } else if (e.target.tagName === 'SELECT') {
                 pData[key] = parseInt(e.target.value) || 0;
                 
@@ -332,7 +382,14 @@ function syncUI() {
 
         // Sync Checkboxes e Selects (Varredura Universal)
         document.querySelectorAll('#advancedEditor input[type="checkbox"]').forEach(chk => {
-            if (chk.dataset.key !== undefined) chk.checked = !!pData[chk.dataset.key];
+            if (chk.dataset.key !== undefined) {
+                if (chk.dataset.type === 'pantheon') {
+                    const state = pData[chk.dataset.key];
+                    chk.checked = !!(state && state.completed === true && state.allBindings === true);
+                } else {
+                    chk.checked = !!pData[chk.dataset.key];
+                }
+            }
         });
         document.querySelectorAll('#advancedEditor select').forEach(sel => {
             if (pData[sel.dataset.key] !== undefined) sel.value = pData[sel.dataset.key];
@@ -462,18 +519,21 @@ document.getElementById('btn112').addEventListener('click', () => {
         
         // Chefes, Sonhadores e NPCs Assassinados/Poupados Concluídos
         const chefesENpcs = [
-            'falseKnightDefeated', 'hornet1Defeated', 'hornetOutskirtsDefeated', 'mawlekDefeated',
-            'defeatedMantisLords', 'defeatedDungDefender', 'mageLordDefeated', 'giantBuzzerDefeated',
+            'falseKnightDefeated', 'falseKnightDreamDefeated', 'hornet1Defeated', 'hornetOutskirtsDefeated', 'mawlekDefeated',
+            'defeatedMantisLords', 'defeatedDungDefender', 'mageLordDefeated', 'mageLordDreamDefeated', 'giantBuzzerDefeated',
             'megaMossChargerDefeated', 'flukeMotherDefeated', 'brokenVesselDefeated', 'infectedKnightDefeated',
-            'collectorDefeated', 'noskDefeated', 'zoteDefeated', 'whiteDefenderDefeated', 'grimmDefeated',
-            'nightmareGrimmDefeated', 'radianceDefeated', 'killedHollowKnight', 'monomonDefeated',
-            'lurienDefeated', 'hegemolDefeated', 'zoteDead', 'nailsmithKilled', 'colosseumBronzeCompleted',
-            'colosseumSilverCompleted', 'colosseumGoldCompleted'
+            'collectorDefeated', 'noskDefeated', 'hornetNoskDefeated', 'traitorLordDefeated', 'hiveKnightDefeated',
+            'megaBeamMinerDefeated', 'megaBeamMiner2Defeated',
+            'zoteDefeated', 'whiteDefenderDefeated', 'grimmDefeated',
+            'nightmareGrimmDefeated', 'radianceDefeated', 'absoluteRadianceDefeated', 'killedHollowKnight', 'monomonDefeated',
+            'lurienDefeated', 'hegemolDefeated', 'zoteDead', 'nailsmithKilled',
+            'alubaDefeated', 'xeroDefeated', 'huDefeated', 'marmuDefeated', 'galienDefeated', 'noEyesDefeated', 'markothDefeated',
+            'slyDefeated', 'oroMatoDefeated', 'sheoDefeated', 'colosseumBronzeCompleted', 'colosseumSilverCompleted', 'colosseumGoldCompleted'
         ];
         chefesENpcs.forEach(c => p[c] = ativar);
         
         // Lar dos Deuses (Godhome) & Todos os 5 Panteões Concluídos
-        const objState = ativar ? {"canUnlock":true,"unlocked":true,"completed":true,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false} : {"canUnlock":false,"unlocked":false,"completed":false,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false};
+        const objState = ativar ? {"canUnlock":true,"unlocked":true,"completed":true,"allBindings":true,"boundNail":true,"boundShell":true,"boundCharms":true,"boundSoul":true} : {"canUnlock":false,"unlocked":false,"completed":false,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false};
         p.bossDoorStateTier1 = objState;
         p.bossDoorStateTier2 = objState;
         p.bossDoorStateTier3 = objState;
@@ -524,7 +584,7 @@ document.getElementById('btnEstacoes').addEventListener('click', () => {
 document.getElementById('btnPanteoes').addEventListener('click', () => {
     aplicarMudanca((p) => {
         const ativar = !p.visitedGodhome;
-        const objState = ativar ? {"canUnlock":true,"unlocked":true,"completed":true,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false} : {"canUnlock":false,"unlocked":false,"completed":false,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false};
+        const objState = ativar ? {"canUnlock":true,"unlocked":true,"completed":true,"allBindings":true,"boundNail":true,"boundShell":true,"boundCharms":true,"boundSoul":true} : {"canUnlock":false,"unlocked":false,"completed":false,"allBindings":false,"boundNail":false,"boundShell":false,"boundCharms":false,"boundSoul":false};
         
         p.bossDoorStateTier1 = objState;
         p.bossDoorStateTier2 = objState;
@@ -533,6 +593,8 @@ document.getElementById('btnPanteoes').addEventListener('click', () => {
         p.bossDoorStateTier5 = objState;
         p.hasGodfinder = ativar;
         p.visitedGodhome = ativar;
+        
+        if(ativar) p.absoluteRadianceDefeated = true; // Necessário para lore do Godhome
     });
 });
 
@@ -546,12 +608,16 @@ document.getElementById('btnChefes').addEventListener('click', () => {
     aplicarMudanca((p) => {
         const ativar = !p.killedHollowKnight; 
         const chefesENpcs = [
-            'falseKnightDefeated', 'hornet1Defeated', 'hornetOutskirtsDefeated', 'mawlekDefeated',
-            'defeatedMantisLords', 'defeatedDungDefender', 'mageLordDefeated', 'giantBuzzerDefeated',
+            'falseKnightDefeated', 'falseKnightDreamDefeated', 'hornet1Defeated', 'hornetOutskirtsDefeated', 'mawlekDefeated',
+            'defeatedMantisLords', 'defeatedDungDefender', 'mageLordDefeated', 'mageLordDreamDefeated', 'giantBuzzerDefeated',
             'megaMossChargerDefeated', 'flukeMotherDefeated', 'brokenVesselDefeated', 'infectedKnightDefeated',
-            'collectorDefeated', 'noskDefeated', 'zoteDefeated', 'whiteDefenderDefeated', 'grimmDefeated',
-            'nightmareGrimmDefeated', 'radianceDefeated', 'killedHollowKnight', 'monomonDefeated',
-            'lurienDefeated', 'hegemolDefeated', 'zoteDead', 'nailsmithKilled'
+            'collectorDefeated', 'noskDefeated', 'hornetNoskDefeated', 'traitorLordDefeated', 'hiveKnightDefeated',
+            'megaBeamMinerDefeated', 'megaBeamMiner2Defeated',
+            'zoteDefeated', 'whiteDefenderDefeated', 'grimmDefeated',
+            'nightmareGrimmDefeated', 'radianceDefeated', 'absoluteRadianceDefeated', 'killedHollowKnight', 'monomonDefeated',
+            'lurienDefeated', 'hegemolDefeated', 'zoteDead', 'nailsmithKilled',
+            'alubaDefeated', 'xeroDefeated', 'huDefeated', 'marmuDefeated', 'galienDefeated', 'noEyesDefeated', 'markothDefeated',
+            'slyDefeated', 'oroMatoDefeated', 'sheoDefeated'
         ];
         chefesENpcs.forEach(c => p[c] = ativar);
     });
