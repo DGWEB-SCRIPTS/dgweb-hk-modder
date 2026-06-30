@@ -9,7 +9,7 @@ Um editor de save (`user1.dat`) definitivo e baseado na web para **Hollow Knight
 O projeto foi totalmente reescrito visualmente e expandido para oferecer controle absoluto sobre o save, focado na melhor experiência de usuário:
 
 - **Interface Moderna (Dashboard):** Layout escuro, profissional, limpo e responsivo, organizado em um sistema dinâmico de abas.
-- **Painel de Ações Rápidas (Presets):** Botões de ativação em um clique para *Hit Kill* (2500 de dano), Geo Infinito, Vida Máxima, Todas as Habilidades e Todos os Amuletos.
+- **Painel de Ações Rápidas (Presets):** Botões de ativação em um clique para *Hit Kill*, Geo Infinito, Vida Máxima, Todas as Habilidades e Todos os Amuletos.
 - **Controle Total (Modo Avançado):**
   - **Atributos e Inventário:** Edite Geo, Essência, Minério Pálido, Tempo de Jogo, Chaves, Ovos Rançosos e Fragmentos.
   - **Amuletos Inteligentes:** Gerencie todos os 40 amuletos com suporte a exclusividades da *lore* (menus automáticos para alternar entre *Alma do Rei / Coração do Vazio*, Níveis do *Filho de Grimm* e upgrades para Inquebráveis).
