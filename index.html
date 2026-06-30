@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DGWEB DEV - Hollow Knight Save Modder</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
-    
+    <title>DGWEB DEV - Hollow Knight Master Modder</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,86 +24,88 @@
         </section>
 
         <div id="editorBox" class="hidden">
+            <!-- AÇÕES RÁPIDAS (PRESETS) -->
             <div class="panel">
                 <h3>⚡ Ações Rápidas</h3>
-                <p class="helper-text">Modificações instantâneas no save.</p>
                 <div class="grid-botoes">
                     <button class="btn-preset" id="btnAmuletos">📿 Todos os Amuletos</button>
                     <button class="btn-preset" id="btnHabilidades">✨ Todas Habilidades</button>
-                    <button class="btn-preset" id="btnHitKill">🗡️ Hit Kill</button>
+                    <button class="btn-preset" id="btnHitKill">🗡️ Golpe Fatal</button>
                     <button class="btn-preset" id="btnVida">❤️ Vida Máxima</button>
                     <button class="btn-preset" id="btnDinheiro">💰 Geo Infinito</button>
                 </div>
             </div>
 
-            <button id="btnToggleAdvanced" class="btn-outline">
-                ⚙️ Configuração Completa
-            </button>
+            <!-- BOTÃO TOGGLE -->
+            <button id="btnToggleAdvanced" class="btn-outline">⚙️ Configuração Completa</button>
 
+            <!-- MODO AVANÇADO -->
             <div id="advancedEditor" class="hidden panel no-padding">
                 <div class="tabs">
-                    <button class="tab-btn active" data-tab="tab-recursos">Atributos & Itens</button>
+                    <button class="tab-btn active" data-tab="tab-recursos">Atributos & Ferrão</button>
+                    <button class="tab-btn" data-tab="tab-inventario">Inventário</button>
                     <button class="tab-btn" data-tab="tab-habilidades">Habilidades</button>
                     <button class="tab-btn" data-tab="tab-amuletos">Amuletos</button>
-                    <button class="tab-btn" data-tab="tab-historia">História & Chefes</button>
-                    <button class="tab-btn" data-tab="tab-mundo">Mundo & NPCs</button>
-                    <button class="tab-btn" data-tab="tab-json">JSON Bruto</button>
+                    <button class="tab-btn" data-tab="tab-historia">História</button>
+                    <button class="tab-btn" data-tab="tab-mundo">Mundo</button>
                 </div>
 
+                <!-- ABA: ATRIBUTOS E FERRÃO -->
                 <div class="tab-content active" id="tab-recursos">
                     <div class="form-grid">
-                        <div class="input-group"><label>💰 Geo (Dinheiro)</label><input type="number" id="inpGeo" min="0"></div>
-                        <div class="input-group"><label>❤️ Vida Máxima (Base)</label><input type="number" id="inpVida" min="1"></div>
-                        <div class="input-group"><label>🗡️ Dano do Ferrão</label><input type="number" id="inpDano" min="1"></div>
-                        <div class="input-group"><label>📿 Espaços de Amuletos</label><input type="number" id="inpCharmSlots" min="1" max="11"></div>
+                        <div class="input-group">
+                            <label>💰 Geo (Dinheiro)</label>
+                            <input type="number" id="inpGeo" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label>❤️ Vida Máxima</label>
+                            <input type="number" id="inpVida" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label>🗡️ Dano do Ferrão</label>
+                            <input type="number" id="inpDano" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label>🗡️ Nível do Ferrão</label>
+                            <select id="selNailLevel" data-key="nailSmithUpgrades">
+                                <option value="0">Ferrão Velho (Nível 0)</option>
+                                <option value="1">Ferrão Afiado (Nível 1)</option>
+                                <option value="2">Ferrão Canalizado (Nível 2)</option>
+                                <option value="3">Ferrão Espiral (Nível 3)</option>
+                                <option value="4">Ferrão Puro (Nível 4)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>📿 Espaços de Amuletos</label>
+                            <input type="number" id="inpCharmSlots" min="1" max="11">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA: INVENTÁRIO -->
+                <div class="tab-content" id="tab-inventario">
+                    <div class="form-grid">
                         <div class="input-group"><label>👻 Essência (Sonhos)</label><input type="number" id="inpEssencia" min="0"></div>
                         <div class="input-group"><label>⛏️ Minério Pálido</label><input type="number" id="inpOre" min="0"></div>
                         <div class="input-group"><label>🗝️ Chaves Simples</label><input type="number" id="inpKeys" min="0"></div>
                         <div class="input-group"><label>🥚 Ovos Rançosos</label><input type="number" id="inpEggs" min="0"></div>
-                        <div class="input-group"><label>🎭 Frag. de Máscara (0-3)</label><input type="number" id="inpMaskFrag" min="0" max="3"></div>
-                        <div class="input-group"><label>🏺 Frag. Receptáculo (0-2)</label><input type="number" id="inpVesselFrag" min="0" max="2"></div>
                         <div class="input-group"><label>🐛 Larvas Resgatadas</label><input type="number" id="inpGrubs" min="0" max="46"></div>
-                        <div class="input-group"><label>⏳ Tempo de Jogo (Seg)</label><input type="number" id="inpPlayTime" min="0" step="1"></div>
+                        <div class="input-group"><label>⏳ Tempo de Jogo (Segundos)</label><input type="number" id="inpPlayTime" min="0"></div>
                     </div>
-                    
-                    <h4 style="margin-top: 25px; margin-bottom: 15px; color: var(--text-main);">Itens Chave & Passes</h4>
-                    <div class="skills-grid" id="itemsContainer">
-                        </div>
                 </div>
 
-                <div class="tab-content" id="tab-habilidades">
-                    <div class="skills-grid" id="skillsContainer">
-                        </div>
-                </div>
-
+                <div class="tab-content" id="tab-habilidades"><div class="skills-grid" id="skillsContainer"></div></div>
                 <div class="tab-content" id="tab-amuletos">
-                    <div class="search-container">
-                        <input type="text" id="searchAmuletos" class="search-bar" placeholder="🔍 Pesquisar amuleto por nome...">
-                    </div>
-                    <div class="charms-grid" id="charmsContainer">
-                        </div>
+                    <input type="text" id="searchAmuletos" class="search-bar" placeholder="🔍 Pesquisar amuleto...">
+                    <div class="charms-grid" id="charmsContainer"></div>
                 </div>
-
-                <div class="tab-content" id="tab-historia">
-                    <p class="helper-text">Derrote chefes, acorde sonhadores e altere o modo de jogo.</p>
-                    <div class="skills-grid" id="storyContainer">
-                        </div>
-                </div>
-
-                <div class="tab-content" id="tab-mundo">
-                    <p class="helper-text">Desbloqueie estações de besouro, áreas do mapa e gerencie NPCs.</p>
-                    <div class="skills-grid" id="worldContainer">
-                        </div>
-                </div>
-
-                <div class="tab-content" id="tab-json">
-                    <p class="helper-text" style="margin-bottom: 10px;">⚠️ Edições manuais refletirão nos botões acima. Cuidado com erros de sintaxe.</p>
-                    <textarea id="manualEditor" spellcheck="false"></textarea>
-                </div>
+                <div class="tab-content" id="tab-historia"><div class="skills-grid" id="storyContainer"></div></div>
+                <div class="tab-content" id="tab-mundo"><div class="skills-grid" id="worldContainer"></div></div>
             </div>
 
+            <!-- DOWNLOADS -->
             <div class="download-section">
-                <button class="btn-down text" id="btnDownTexto">📄 Baixar .TXT Seguro</button>
+                <button class="btn-down text" id="btnDownTexto">📄 Baixar .TXT</button>
                 <button class="btn-down crypt" id="btnDownJogo">💾 Exportar para o Jogo (.DAT)</button>
             </div>
         </div>
