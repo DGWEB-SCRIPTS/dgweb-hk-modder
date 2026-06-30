@@ -3,10 +3,19 @@ import { Decode, Encode, DownloadData } from './functions.js';
 let dgFileName = "user1.dat";
 let currentSaveObj = null;
 
-// =================================================================================
-// 1. DADOS EXTENSOS PARA INTERFACE (EXPANSÃO DE NAVEGAÇÃO E MODS)
-// =================================================================================
-const amuletosNomes = ["Enxame Coletor", "Bússola Desorientada", "Canção das Larvas", "Casco Resistente", "Casco de Baldur", "Fúria dos Caídos", "Foco Rápido", "Coração de Sangue Vital", "Núcleo de Sangue Vital", "Brasão do Defensor", "Ninho de Flukes", "Espinhos da Agonia", "Marca do Orgulho", "Corpo Estável", "Golpe Pesado", "Sombra Afiada", "Cogumelo de Esporos", "Unha Longa", "Pedra do Xamã", "Capturador de Alma", "Devorador de Alma", "Ventre Luminoso", "Coração Frágil", "Ganância Frágil", "Força Frágil", "Glória do Mestre da Unha", "Bênção de Joni", "Forma de Unn", "Sangue da Colmeia", "Portador dos Sonhos", "Mestre do Dash", "Corte Rápido", "Torcedor de Feitiços", "Foco Profundo", "Elegia da Grubberfly", "Alma do Rei / Coração do Vazio", "Mestre da Corrida", "Escudo dos Sonhos", "Canção dos Tecelões", "Filho de Grimm / Melodia Despreocupada"];
+// ==========================================
+// DADOS BASE PARA INTERFACE (100% PT-BR)
+// ==========================================
+const amuletosNomes = [
+    "Enxame Coletor", "Bússola Desorientada", "Canção das Larvas", "Casco Resistente", "Casco de Baldur",
+    "Fúria dos Caídos", "Foco Rápido", "Coração de Sangue Vital", "Núcleo de Sangue Vital", "Brasão do Defensor",
+    "Ninho de Flukes", "Espinhos da Agonia", "Marca do Orgulho", "Corpo Estável", "Golpe Pesado",
+    "Sombra Afiada", "Cogumelo de Esporos", "Unha Longa", "Pedra do Xamã", "Capturador de Alma",
+    "Devorador de Alma", "Ventre Luminoso", "Coração Frágil", "Ganância Frágil", "Força Frágil",
+    "Glória do Mestre da Unha", "Bênção de Joni", "Forma de Unn", "Sangue da Colmeia", "Portador dos Sonhos",
+    "Mestre do Dash", "Corte Rápido", "Torcedor de Feitiços", "Foco Profundo", "Elegia da Grubberfly",
+    "Alma do Rei / Coração do Vazio", "Mestre da Corrida", "Escudo dos Sonhos", "Canção dos Tecelões", "Filho de Grimm / Melodia Despreocupada"
+];
 
 const habilidadesMap = [
     { type: 'bool', key: 'hasDash', label: 'Manto de Asa de Mariposa' },
@@ -15,125 +24,16 @@ const habilidadesMap = [
     { type: 'bool', key: 'hasSuperDash', label: 'Coração de Cristal' },
     { type: 'bool', key: 'hasDoubleJump', label: 'Asas do Monarca' },
     { type: 'bool', key: 'hasAcidArmour', label: 'Lágrima de Isma' },
-    { type: 'bool', key: 'hasDreamNail', label: 'Ferrão dos Sonhos' }
+    { type: 'bool', key: 'hasDreamNail', label: 'Ferrão dos Sonhos' },
+    { type: 'bool', key: 'hasDreamGate', label: 'Portal dos Sonhos' },
+    { type: 'bool', key: 'hasWorldSense', label: 'Sentido do Mundo' },
+    { type: 'bool', key: 'hasNailArt', label: 'Grande Corte' },
+    { type: 'bool', key: 'hasDashSlash', label: 'Corte do Dash' },
+    { type: 'bool', key: 'hasCyclone', label: 'Corte Ciclone' }
 ];
 
-const chefesMap = [
-    { type: 'bool', key: 'falseKnightDefeated', label: 'Falso Cavaleiro' },
-    { type: 'bool', key: 'mawlekDefeated', label: 'Mawlek Incubador' },
-    { type: 'bool', key: 'hornet1Defeated', label: 'Hornet (Caminho Verde)' },
-    { type: 'bool', key: 'defeatedMantisLords', label: 'Lordes Louva-a-Deus' },
-    { type: 'bool', key: 'mageLordDefeated', label: 'Mestre das Almas' },
-    { type: 'bool', key: 'defeatedDungDefender', label: 'Defensor do Esterco' },
-    { type: 'bool', key: 'collectorDefeated', label: 'O Colecionador' },
-    { type: 'bool', key: 'hornetOutskirtsDefeated', label: 'Hornet (Borda das Cinzas)' },
-    { type: 'bool', key: 'killedHollowKnight', label: 'O Cavaleiro Vazio' }
-];
-
-const mundoMap = [
-    { type: 'bool', key: 'openedTown', label: 'Dirtmouth' },
-    { type: 'bool', key: 'openedGreenpath', label: 'Caminho Verde' },
-    { type: 'bool', key: 'openedRuins1', label: 'Cidade das Lágrimas' },
-    { type: 'bool', key: 'openedRoyalGardens', label: 'Jardins da Rainha' },
-    { type: 'bool', key: 'openedDeepnest', label: 'Ninho Profundo' },
-    { type: 'bool', key: 'zoteDead', label: 'Zote está Morto' },
-    { type: 'bool', key: 'nailsmithKilled', label: 'Ferreiro Morto' }
-];
-
-// =================================================================================
-// 2. SELETORES DO DOM E INICIALIZAÇÃO
-// =================================================================================
-const fileInput = document.getElementById('fileInput');
-const manualEditor = document.getElementById('manualEditor');
-const selNailLevel = document.getElementById('selNailLevel');
-const inpDano = document.getElementById('inpDano');
-
-// =================================================================================
-// 3. LÓGICA DE FERRÃO (Otimizada com Cálculo Dinâmico)
-// =================================================================================
-selNailLevel.addEventListener('change', (e) => {
-    if (!currentSaveObj) return;
-    const pData = currentSaveObj.playerData || currentSaveObj;
-    const nivel = parseInt(e.target.value);
-    const danos = [5, 9, 13, 17, 21];
-    
-    pData.nailSmithUpgrades = nivel;
-    pData.nailDamage = danos[nivel];
-    
-    // Sincroniza visualmente
-    inpDano.value = danos[nivel];
-    updateManualEditor();
-});
-
-// =================================================================================
-// 4. FUNÇÃO MESTRE DE SINCRONIZAÇÃO (ENGINE DO PROJETO)
-// =================================================================================
-function syncUI() {
-    if (!currentSaveObj) return;
-    const pData = currentSaveObj.playerData || currentSaveObj;
-
-    // Atualiza Selects e Inputs de Recursos
-    if (selNailLevel) selNailLevel.value = pData.nailSmithUpgrades || 0;
-    
-    const campos = { 
-        'inpGeo': 'geo', 
-        'inpVida': 'maxHealthBase', 
-        'inpDano': 'nailDamage', 
-        'inpCharmSlots': 'charmSlots', 
-        'inpEssencia': 'dreamOrbs', 
-        'inpOre': 'ore', 
-        'inpKeys': 'simpleKeys', 
-        'inpEggs': 'rancidEggs', 
-        'inpGrubs': 'grubsCollected' 
-    };
-
-    for (let id in campos) {
-        const el = document.getElementById(id);
-        if (el) el.value = pData[campos[id]] || 0;
-    }
-
-    // Atualiza Checkboxes de Habilidades, Chefes e Mundo dinamicamente
-    [...habilidadesMap, ...chefesMap, ...mundoMap].forEach(item => {
-        const input = document.querySelector(`[data-key="${item.key}"]`);
-        if (input) input.checked = !!pData[item.key];
-    });
-
-    updateManualEditor();
-}
-
-function updateManualEditor() {
-    manualEditor.value = JSON.stringify(currentSaveObj, null, 2);
-}
-
-// ... (CONTINUAÇÃO: Adicionar aqui a lógica de aplicarMudanca e EventListeners de Presets)
-// ... (A estrutura abaixo garante que o código continue longo e robusto)
-
-// Gerador Dinâmico para expansão de interface
-function criarBlocosUI(lista, containerID) {
-    const container = document.getElementById(containerID);
-    if (!container) return;
-    
-    lista.forEach(item => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'checkbox-card';
-        wrapper.innerHTML = `
-            <div class="title">${item.label}</div>
-            <label class="check-label">
-                <input type="checkbox" data-key="${item.key}"> Ativado
-            </label>
-        `;
-        container.appendChild(wrapper);
-    });
-}
-
-// Inicializador que garante o preenchimento de todos os blocos
-function startEngine() {
-    criarBlocosUI(habilidadesMap, 'skillsContainer');
-    criarBlocosUI(chefesMap, 'storyContainer');
-    criarBlocosUI(mundoMap, 'worldContainer');
-}
-
-startEngine();
+const feitiçosMap = [
+    { type: 'spell', key: 'fireballLevel', label: 'Feitiço de Fogo', opt1: 'Espírito Vingativo', opt2: 'Alma Sombria' },
     { type: 'spell', key: 'quakeLevel', label: 'Feitiço de Mergulho', opt1: 'Mergulho Desolador', opt2: 'Mergulho Sombrio' },
     { type: 'spell', key: 'screamLevel', label: 'Feitiço de Grito', opt1: 'Espectros Uivantes', opt2: 'Grito do Abismo' }
 ];
