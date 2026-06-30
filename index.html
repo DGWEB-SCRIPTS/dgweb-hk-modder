@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DGWEB DEV - Hollow Knight Save Modder</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="main-container">
         <header>
-            <h1>Hollow Knight Save Modder</h1>
+            <h1>Hollow Knight Master Modder</h1>
             <p class="brand">Desenvolvido por <a href="https://github.com/DGWEB-SCRIPTS" target="_blank">DGWEB DEV</a></p>
         </header>
         
@@ -42,31 +46,33 @@
 
             <div id="advancedEditor" class="hidden panel no-padding">
                 <div class="tabs">
-                    <button class="tab-btn active" data-tab="tab-recursos">Recursos</button>
+                    <button class="tab-btn active" data-tab="tab-recursos">Atributos & Itens</button>
                     <button class="tab-btn" data-tab="tab-habilidades">Habilidades</button>
                     <button class="tab-btn" data-tab="tab-amuletos">Amuletos</button>
+                    <button class="tab-btn" data-tab="tab-historia">História & Chefes</button>
+                    <button class="tab-btn" data-tab="tab-mundo">Mundo & NPCs</button>
                     <button class="tab-btn" data-tab="tab-json">JSON Bruto</button>
                 </div>
 
                 <div class="tab-content active" id="tab-recursos">
                     <div class="form-grid">
-                        <div class="input-group">
-                            <label>💰 Geo (Dinheiro)</label>
-                            <input type="number" id="inpGeo" min="0">
-                        </div>
-                        <div class="input-group">
-                            <label>❤️ Vida Máxima (Base)</label>
-                            <input type="number" id="inpVida" min="1">
-                        </div>
-                        <div class="input-group">
-                            <label>🗡️ Dano do Ferrão</label>
-                            <input type="number" id="inpDano" min="1">
-                        </div>
-                        <div class="input-group">
-                            <label>📿 Espaços de Amuletos (Máx 11)</label>
-                            <input type="number" id="inpCharmSlots" min="1" max="11">
-                        </div>
+                        <div class="input-group"><label>💰 Geo (Dinheiro)</label><input type="number" id="inpGeo" min="0"></div>
+                        <div class="input-group"><label>❤️ Vida Máxima (Base)</label><input type="number" id="inpVida" min="1"></div>
+                        <div class="input-group"><label>🗡️ Dano do Ferrão</label><input type="number" id="inpDano" min="1"></div>
+                        <div class="input-group"><label>📿 Espaços de Amuletos</label><input type="number" id="inpCharmSlots" min="1" max="11"></div>
+                        <div class="input-group"><label>👻 Essência (Sonhos)</label><input type="number" id="inpEssencia" min="0"></div>
+                        <div class="input-group"><label>⛏️ Minério Pálido</label><input type="number" id="inpOre" min="0"></div>
+                        <div class="input-group"><label>🗝️ Chaves Simples</label><input type="number" id="inpKeys" min="0"></div>
+                        <div class="input-group"><label>🥚 Ovos Rançosos</label><input type="number" id="inpEggs" min="0"></div>
+                        <div class="input-group"><label>🎭 Frag. de Máscara (0-3)</label><input type="number" id="inpMaskFrag" min="0" max="3"></div>
+                        <div class="input-group"><label>🏺 Frag. Receptáculo (0-2)</label><input type="number" id="inpVesselFrag" min="0" max="2"></div>
+                        <div class="input-group"><label>🐛 Larvas Resgatadas</label><input type="number" id="inpGrubs" min="0" max="46"></div>
+                        <div class="input-group"><label>⏳ Tempo de Jogo (Seg)</label><input type="number" id="inpPlayTime" min="0" step="1"></div>
                     </div>
+                    
+                    <h4 style="margin-top: 25px; margin-bottom: 15px; color: var(--text-main);">Itens Chave & Passes</h4>
+                    <div class="skills-grid" id="itemsContainer">
+                        </div>
                 </div>
 
                 <div class="tab-content" id="tab-habilidades">
@@ -79,6 +85,18 @@
                         <input type="text" id="searchAmuletos" class="search-bar" placeholder="🔍 Pesquisar amuleto por nome...">
                     </div>
                     <div class="charms-grid" id="charmsContainer">
+                        </div>
+                </div>
+
+                <div class="tab-content" id="tab-historia">
+                    <p class="helper-text">Derrote chefes, acorde sonhadores e altere o modo de jogo.</p>
+                    <div class="skills-grid" id="storyContainer">
+                        </div>
+                </div>
+
+                <div class="tab-content" id="tab-mundo">
+                    <p class="helper-text">Desbloqueie estações de besouro, áreas do mapa e gerencie NPCs.</p>
+                    <div class="skills-grid" id="worldContainer">
                         </div>
                 </div>
 
