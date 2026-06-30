@@ -89,6 +89,118 @@
                     </div>
                     
                     <h4 style="margin-top: 25px; margin-bottom: 15px; color: var(--text-main);">Itens Chave & Passes</h4>
+                    <div class="skills-grid" id="itemsContainer"></div>
+                </div>
+
+                <div class="tab-content" id="tab-habilidades">
+                    <div class="skills-grid" id="skillsContainer"></div>
+                </div>
+
+                <div class="tab-content" id="tab-amuletos">
+                    <div class="search-container">
+                        <input type="text" id="searchAmuletos" class="search-bar" placeholder="🔍 Pesquisar amuleto por nome...">
+                    </div>
+                    <div class="charms-grid" id="charmsContainer"></div>
+                </div>
+
+                <div class="tab-content" id="tab-historia">
+                    <p class="helper-text">Derrote chefes, acorde sonhadores e altere o modo de jogo.</p>
+                    
+                    <div class="skills-grid" id="storyContainer"></div>
+
+                    <h4 style="margin-top: 25px; margin-bottom: 15px; color: var(--text-main);">Bosses Principais e Variantes</h4>
+                    <div class="skills-grid" id="bossesPrincipaisContainer"></div>
+
+                    <h4 style="margin-top: 25px; margin-bottom: 15px; color: var(--text-main);">Guerreiros dos Sonhos</h4>
+                    <div class="skills-grid" id="guerreirosSonhosContainer"></div>
+
+                    <h4 style="margin-top: 25px; margin-bottom: 15px; color: var(--text-main);">Coliseu e Chefes Opcionais</h4>
+                    <div class="skills-grid" id="coliseuOpcionaisContainer"></div>
+
+                    <h4 style="margin-top: 25px; margin-bottom: 15px; color: var(--text-main);">Lar dos Deuses / Panteões (100% Modos/Bindings)</h4>
+                    <div class="skills-grid" id="panteoesContainer"></div>
+                </div>
+
+                <div class="tab-content" id="tab-mundo">
+                    <p class="helper-text">Desbloqueie estações de besouro, áreas do mapa e gerencie NPCs.</p>
+                    <div class="skills-grid" id="worldContainer"></div>
+                </div>
+
+                <div class="tab-content" id="tab-json">
+                    <p class="helper-text" style="margin-bottom: 10px;">⚠️ Edições manuais refletirão nos botões acima. Cuidado com erros de sintaxe.</p>
+                    <textarea id="manualEditor" spellcheck="false"></textarea>
+                </div>
+            </div>
+
+            <div class="download-section">
+                <button class="btn-down text" id="btnDownTexto">📄 Baixar .TXT Seguro</button>
+                <button class="btn-down crypt" id="btnDownJogo">💾 Exportar para o Jogo (.DAT)</button>
+            </div>
+        </div>
+        
+        <footer>
+            &copy; 2026 DGWEB DEV. Todos os direitos reservados.
+        </footer>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
+                    <button class="btn-preset" id="btnHabilidades">✨ Todas Habilidades</button>
+                    <button class="btn-preset" id="btnMapas">🗺️ 100% Mapas & Pinos</button>
+                    <button class="btn-preset" id="btnEstacoes">🪲 Todas Estações</button>
+                    <button class="btn-preset" id="btnPanteoes">🏆 Panteões Completos</button>
+                    <button class="btn-preset" id="btnLarvas">🐛 Todas as Larvas</button>
+                    <button class="btn-preset" id="btnChefes">💀 Derrotar Chefes/NPCs</button>
+                    <button class="btn-preset" id="btnHitKill">🗡️ Hit Kill</button>
+                    <button class="btn-preset" id="btnVida">❤️ Vida Máxima</button>
+                    <button class="btn-preset" id="btnDinheiro">💰 Geo Infinito</button>
+                </div>
+            </div>
+
+            <button id="btnToggleAdvanced" class="btn-outline">
+                ⚙️ Configuração Completa
+            </button>
+
+            <div id="advancedEditor" class="hidden panel no-padding">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="tab-recursos">Atributos & Itens</button>
+                    <button class="tab-btn" data-tab="tab-habilidades">Habilidades</button>
+                    <button class="tab-btn" data-tab="tab-amuletos">Amuletos</button>
+                    <button class="tab-btn" data-tab="tab-historia">História & Chefes</button>
+                    <button class="tab-btn" data-tab="tab-mundo">Mundo & NPCs</button>
+                    <button class="tab-btn" data-tab="tab-json">JSON Bruto</button>
+                </div>
+
+                <div class="tab-content active" id="tab-recursos">
+                    <div class="form-grid">
+                        <div class="input-group"><label>💰 Geo (Dinheiro)</label><input type="number" id="inpGeo" min="0"></div>
+                        <div class="input-group"><label>❤️ Vida Máxima (Base)</label><input type="number" id="inpVida" min="1"></div>
+                        <div class="input-group"><label>🗡️ Dano do Ferrão</label><input type="number" id="inpDano" min="1"></div>
+                        
+                        <div class="input-group">
+                            <label>🗡️ Nível do Ferrão</label>
+                            <select id="selNailLevel" data-key="nailSmithUpgrades">
+                                <option value="0">Ferrão Velho (Nível 0)</option>
+                                <option value="1">Ferrão Afiado (Nível 1)</option>
+                                <option value="2">Ferrão Canalizado (Nível 2)</option>
+                                <option value="3">Ferrão Espiral (Nível 3)</option>
+                                <option value="4">Ferrão Puro (Nível 4)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group"><label>📿 Espaços de Amuletos</label><input type="number" id="inpCharmSlots" min="1" max="11"></div>
+                        <div class="input-group"><label>👻 Essência (Sonhos)</label><input type="number" id="inpEssencia" min="0"></div>
+                        <div class="input-group"><label>⛏️ Minério Pálido</label><input type="number" id="inpOre" min="0"></div>
+                        <div class="input-group"><label>🗝️ Chaves Simples</label><input type="number" id="inpKeys" min="0"></div>
+                        <div class="input-group"><label>🥚 Ovos Rançosos</label><input type="number" id="inpEggs" min="0"></div>
+                        <div class="input-group"><label>🎭 Frag. de Máscara (0-3)</label><input type="number" id="inpMaskFrag" min="0" max="3"></div>
+                        <div class="input-group"><label>🏺 Frag. Receptáculo (0-2)</label><input type="number" id="inpVesselFrag" min="0" max="2"></div>
+                        <div class="input-group"><label>🐛 Larvas Resgatadas</label><input type="number" id="inpGrubs" min="0" max="46"></div>
+                        <div class="input-group"><label>⏳ Tempo de Jogo (Seg)</label><input type="number" id="inpPlayTime" min="0" step="1"></div>
+                    </div>
+                    
+                    <h4 style="margin-top: 25px; margin-bottom: 15px; color: var(--text-main);">Itens Chave & Passes</h4>
                     <div class="skills-grid" id="itemsContainer">
                         </div>
                 </div>
