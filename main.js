@@ -7,50 +7,17 @@ let currentSaveObj = null;
 // DADOS BASE PARA INTERFACE (100% PT-BR)
 // ==========================================
 const amuletosNomes = [
-    "Enxame Coletor",          // 1
-    "Bússola Desorientada",    // 2
-    "Canção das Larvas",       // 3
-    "Casco Resistente",        // 4
-    "Casco de Baldur",         // 5
-    "Fúria dos Caídos",        // 6
-    "Foco Rápido",             // 7
-    "Coração de Sangue Vital", // 8
-    "Núcleo de Sangue Vital",  // 9
-    "Brasão do Defensor",      // 10
-    "Ninho de Flukes",         // 11
-    "Espinhos da Agonia",      // 12
-    "Marca do Orgulho",        // 13
-    "Corpo Estável",           // 14
-    "Golpe Pesado",            // 15
-    "Sombra Afiada",           // 16
-    "Cogumelo de Esporos",     // 17
-    "Unha Longa",              // 18
-    "Pedra do Xamã",           // 19
-    "Capturador de Alma",      // 20
-    "Devorador de Alma",       // 21
-    "Ventre Luminoso",         // 22
-    "Coração Frágil",          // 23
-    "Ganância Frágil",         // 24
-    "Força Frágil",            // 25
-    "Glória do Mestre da Unha",// 26
-    "Bênção de Joni",          // 27
-    "Forma de Unn",            // 28
-    "Sangue da Colmeia",       // 29
-    "Portador dos Sonhos",     // 30
-    "Mestre do Dash",          // 31
-    "Corte Rápido",            // 32
-    "Torcedor de Feitiços",    // 33
-    "Foco Profundo",           // 34
-    "Elegia da Grubberfly",    // 35
-    "Alma do Rei / Coração do Vazio", // 36
-    "Mestre da Corrida",       // 37
-    "Escudo dos Sonhos",       // 38
-    "Canção dos Tecelões",     // 39
-    "Filho de Grimm / Melodia Despreocupada" // 40
+    "Enxame Coletor", "Bússola Desorientada", "Canção das Larvas", "Casco Resistente", "Casco de Baldur",
+    "Fúria dos Caídos", "Foco Rápido", "Coração de Sangue Vital", "Núcleo de Sangue Vital", "Brasão do Defensor",
+    "Ninho de Flukes", "Espinhos da Agonia", "Marca do Orgulho", "Corpo Estável", "Golpe Pesado",
+    "Sombra Afiada", "Cogumelo de Esporos", "Unha Longa", "Pedra do Xamã", "Capturador de Alma",
+    "Devorador de Alma", "Ventre Luminoso", "Coração Frágil", "Ganância Frágil", "Força Frágil",
+    "Glória do Mestre da Unha", "Bênção de Joni", "Forma de Unn", "Sangue da Colmeia", "Portador dos Sonhos",
+    "Mestre do Dash", "Corte Rápido", "Torcedor de Feitiços", "Foco Profundo", "Elegia da Grubberfly",
+    "Alma do Rei / Coração do Vazio", "Mestre da Corrida", "Escudo dos Sonhos", "Canção dos Tecelões", "Filho de Grimm / Melodia Despreocupada"
 ];
 
 const habilidadesMap = [
-    // Movimento e Extras
     { type: 'bool', key: 'hasDash', label: 'Manto de Asa de Mariposa' },
     { type: 'bool', key: 'hasShadowDash', label: 'Manto Sombrio' },
     { type: 'bool', key: 'hasWalljump', label: 'Garra de Louva-a-Deus' },
@@ -60,16 +27,62 @@ const habilidadesMap = [
     { type: 'bool', key: 'hasDreamNail', label: 'Ferrão dos Sonhos' },
     { type: 'bool', key: 'hasDreamGate', label: 'Portal dos Sonhos' },
     { type: 'bool', key: 'hasWorldSense', label: 'Sentido do Mundo' },
-    
-    // Artes da Unha
     { type: 'bool', key: 'hasNailArt', label: 'Grande Corte' },
     { type: 'bool', key: 'hasDashSlash', label: 'Corte do Dash' },
-    { type: 'bool', key: 'hasCyclone', label: 'Corte Ciclone' },
+    { type: 'bool', key: 'hasCyclone', label: 'Corte Ciclone' }
+];
 
-    // Feitiços
+const feitiçosMap = [
     { type: 'spell', key: 'fireballLevel', label: 'Feitiço de Fogo', opt1: 'Espírito Vingativo', opt2: 'Alma Sombria' },
     { type: 'spell', key: 'quakeLevel', label: 'Feitiço de Mergulho', opt1: 'Mergulho Desolador', opt2: 'Mergulho Sombrio' },
     { type: 'spell', key: 'screamLevel', label: 'Feitiço de Grito', opt1: 'Espectros Uivantes', opt2: 'Grito do Abismo' }
+];
+
+const itensMap = [
+    { type: 'bool', key: 'hasMap', label: 'Mapa de Hallownest' },
+    { type: 'bool', key: 'hasQuill', label: 'Pena (Mapeamento)' },
+    { type: 'bool', key: 'hasKingsBrand', label: 'Marca do Rei' },
+    { type: 'bool', key: 'hasCityKey', label: 'Brasão da Cidade' },
+    { type: 'bool', key: 'hasSlykey', label: 'Chave do Lojista' },
+    { type: 'bool', key: 'hasWhiteKey', label: 'Chave Elegante' },
+    { type: 'bool', key: 'hasLoveKey', label: 'Chave do Amor' },
+    { type: 'bool', key: 'hasTramPass', label: 'Passe do Bonde' },
+    { type: 'bool', key: 'hasLantern', label: 'Lanterna de Lumafly' }
+];
+
+const historiaMap = [
+    { type: 'select', key: 'permadeathMode', label: 'Modo de Jogo', options: [{val: 0, text: 'Normal'}, {val: 1, text: 'Alma de Aço (PermaDeath)'}, {val: 2, text: 'Alma de Aço Concluído'}] },
+    { type: 'bool', key: 'falseKnightDefeated', label: 'Falso Cavaleiro Derrotado' },
+    { type: 'bool', key: 'hornet1Defeated', label: 'Hornet (Caminho Verde) Derrotada' },
+    { type: 'bool', key: 'hornetOutskirtsDefeated', label: 'Hornet (Borda das Cinzas) Derrotada' },
+    { type: 'bool', key: 'mawlekDefeated', label: 'Mawlek Incubador Derrotado' },
+    { type: 'bool', key: 'defeatedMantisLords', label: 'Lordes Louva-a-Deus Derrotados' },
+    { type: 'bool', key: 'defeatedDungDefender', label: 'Defensor do Esterco Derrotado' },
+    { type: 'bool', key: 'mageLordDefeated', label: 'Mestre das Almas Derrotado' },
+    { type: 'bool', key: 'monomonDefeated', label: 'Sonhadora: Monomon (Morto)' },
+    { type: 'bool', key: 'lurienDefeated', label: 'Sonhador: Lurien (Morto)' },
+    { type: 'bool', key: 'hegemolDefeated', label: 'Sonhadora: Herrah (Morto)' },
+    { type: 'bool', key: 'killedHollowKnight', label: 'O Cavaleiro Vazio Derrotado' },
+    { type: 'bool', key: 'colosseumBronzeCompleted', label: 'Coliseu: Prova do Guerreiro' },
+    { type: 'bool', key: 'colosseumSilverCompleted', label: 'Coliseu: Prova do Conquistador' },
+    { type: 'bool', key: 'colosseumGoldCompleted', label: 'Coliseu: Prova do Tolo' }
+];
+
+const mundoMap = [
+    { type: 'bool', key: 'openedTown', label: 'Estação: Dirtmouth' },
+    { type: 'bool', key: 'openedCrossroads', label: 'Estação: Encruzilhada' },
+    { type: 'bool', key: 'openedGreenpath', label: 'Estação: Caminho Verde' },
+    { type: 'bool', key: 'openedRuins1', label: 'Estação: Cidade das Lágrimas' },
+    { type: 'bool', key: 'openedRuins2', label: 'Estação: Armazém da Cidade' },
+    { type: 'bool', key: 'openedFungalWastes', label: 'Estação: Ermos Fúngicos' },
+    { type: 'bool', key: 'openedRoyalGardens', label: 'Estação: Jardins da Rainha' },
+    { type: 'bool', key: 'openedRestingGrounds', label: 'Estação: Terras do Repouso' },
+    { type: 'bool', key: 'openedDeepnest', label: 'Estação: Ninho Profundo' },
+    { type: 'bool', key: 'openedHiddenStation', label: 'Estação: Estação Oculta' },
+    { type: 'bool', key: 'openedStagNest', label: 'Estação: Ninho dos Besouros' },
+    { type: 'bool', key: 'zoteDead', label: 'Zote Morto' },
+    { type: 'bool', key: 'nailsmithKilled', label: 'Ferreiro Morto' },
+    { type: 'bool', key: 'nailsmithSpared', label: 'Ferreiro Poupado' }
 ];
 
 // ==========================================
@@ -79,68 +92,91 @@ const fileInput = document.getElementById('fileInput');
 const statusText = document.getElementById('status');
 const editorBox = document.getElementById('editorBox');
 const manualEditor = document.getElementById('manualEditor');
-
 const btnToggleAdvanced = document.getElementById('btnToggleAdvanced');
 const advancedEditor = document.getElementById('advancedEditor');
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
+// Inputs Numéricos (Recursos e Inventário)
 const inpGeo = document.getElementById('inpGeo');
 const inpVida = document.getElementById('inpVida');
 const inpDano = document.getElementById('inpDano');
 const inpCharmSlots = document.getElementById('inpCharmSlots');
+const inpPlayTime = document.getElementById('inpPlayTime');
+const inpEssencia = document.getElementById('inpEssencia');
+const inpOre = document.getElementById('inpOre');
+const inpKeys = document.getElementById('inpKeys');
+const inpEggs = document.getElementById('inpEggs');
+const inpMaskFrag = document.getElementById('inpMaskFrag');
+const inpVesselFrag = document.getElementById('inpVesselFrag');
+const inpGrubs = document.getElementById('inpGrubs');
 
 const skillsContainer = document.getElementById('skillsContainer');
 const charmsContainer = document.getElementById('charmsContainer');
+const itemsContainer = document.getElementById('itemsContainer');
+const storyContainer = document.getElementById('storyContainer');
+const worldContainer = document.getElementById('worldContainer');
 const searchAmuletos = document.getElementById('searchAmuletos');
 
 // ==========================================
-// CONSTRUÇÃO DA INTERFACE AVANÇADA
+// FUNÇÕES GERADORAS DE INTERFACE
 // ==========================================
-function initAdvancedUI() {
-    skillsContainer.innerHTML = '';
-    habilidadesMap.forEach(hab => {
+function geradorBlocos(mapArray, container) {
+    container.innerHTML = '';
+    mapArray.forEach(item => {
         const div = document.createElement('div');
         div.className = 'checkbox-card';
         
-        if (hab.type === 'bool') {
+        if (item.type === 'bool') {
             div.innerHTML = `
-                <div class="title">${hab.label}</div>
-                <label class="check-label">
-                    <input type="checkbox" data-key="${hab.key}"> Desbloqueado
-                </label>
+                <div class="title">${item.label}</div>
+                <label class="check-label"><input type="checkbox" data-key="${item.key}"> Ativo / Desbloqueado</label>
             `;
-        } else if (hab.type === 'spell') {
+        } else if (item.type === 'spell') {
             div.innerHTML = `
-                <div class="title">${hab.label}</div>
-                <select data-key="${hab.key}" style="margin-top: 8px;">
+                <div class="title">${item.label}</div>
+                <select data-key="${item.key}" style="margin-top: 8px;">
                     <option value="0">Não possui</option>
-                    <option value="1">✨ ${hab.opt1}</option>
-                    <option value="2">🔥 ${hab.opt2} (Máx)</option>
+                    <option value="1">✨ ${item.opt1}</option>
+                    <option value="2">🔥 ${item.opt2} (Máx)</option>
                 </select>
             `;
+        } else if (item.type === 'select') {
+            let optionsHtml = item.options.map(o => `<option value="${o.val}">${o.text}</option>`).join('');
+            div.innerHTML = `
+                <div class="title">${item.label}</div>
+                <select data-key="${item.key}" style="margin-top: 8px;">${optionsHtml}</select>
+            `;
         }
-        
-        skillsContainer.appendChild(div);
+        container.appendChild(div);
     });
+}
 
+function initAdvancedUI() {
+    // Gerar Habilidades e Feitiços combinados
+    geradorBlocos([...habilidadesMap, ...feitiçosMap], skillsContainer);
+    
+    // Gerar Itens, História e Mundo
+    geradorBlocos(itensMap, itemsContainer);
+    geradorBlocos(historiaMap, storyContainer);
+    geradorBlocos(mundoMap, worldContainer);
+
+    // Gerar Amuletos com lógicas exclusivas (Inquebráveis, Kingsoul, Grimmchild)
     charmsContainer.innerHTML = '';
     amuletosNomes.forEach((nome, index) => {
         const i = index + 1;
         const div = document.createElement('div');
         div.className = 'checkbox-card charm-item';
+        div.dataset.name = nome.toLowerCase();
         
-        let nomeVisual = nome;
         let extraHTML = '';
-        
         if (i === 36) {
             extraHTML = `
                 <select data-key="royalCharmState" style="margin-top: 8px;">
                     <option value="0">Estado Padrão</option>
                     <option value="3">👑 Alma do Rei (Nível 3)</option>
                     <option value="4">🖤 Coração do Vazio (Nível 4)</option>
-                </select>
-            `;
+                </select>`;
         } else if (i === 40) {
             extraHTML = `
                 <select data-key="grimmChildLevel" style="margin-top: 8px;">
@@ -150,31 +186,22 @@ function initAdvancedUI() {
                     <option value="3">🦇 Filho de Grimm Nvl 3</option>
                     <option value="4">🦇 Filho de Grimm Máx</option>
                     <option value="5">🎵 Melodia Despreocupada</option>
-                </select>
-            `;
+                </select>`;
         } else if (i === 23 || i === 24 || i === 25) {
             const keyStr = i === 23 ? 'fragileHealth_unbreakable' : i === 24 ? 'fragileGreed_unbreakable' : 'fragileStrength_unbreakable';
-            extraHTML = `
-                <label class="check-label" style="margin-top: 8px; color: var(--primary);">
-                    <input type="checkbox" data-key="${keyStr}"> 🛡️ Tornar Inquebrável
-                </label>
-            `;
+            extraHTML = `<label class="check-label" style="margin-top: 8px; color: var(--primary);"><input type="checkbox" data-key="${keyStr}"> 🛡️ Inquebrável</label>`;
         }
 
-        div.dataset.name = nomeVisual.toLowerCase();
         div.innerHTML = `
-            <div class="title">${i}. ${nomeVisual}</div>
-            <label class="check-label">
-                <input type="checkbox" data-key="gotCharm_${i}"> Possui no Inventário
-            </label>
-            <label class="check-label">
-                <input type="checkbox" data-key="equippedCharm_${i}"> Equipado
-            </label>
+            <div class="title">${i}. ${nome}</div>
+            <label class="check-label"><input type="checkbox" data-key="gotCharm_${i}"> Possui no Inventário</label>
+            <label class="check-label"><input type="checkbox" data-key="equippedCharm_${i}"> Equipado</label>
             ${extraHTML}
         `;
         charmsContainer.appendChild(div);
     });
 
+    // Listener Mestre para qualquer alteração nos painéis (Atualiza o JSON)
     document.querySelectorAll('#advancedEditor input:not(.search-bar), #advancedEditor select').forEach(input => {
         input.addEventListener('change', (e) => {
             if (!currentSaveObj) return;
@@ -184,8 +211,17 @@ function initAdvancedUI() {
             if (e.target.type === 'number') {
                 const mapKey = e.target.id === 'inpGeo' ? 'geo' : 
                                e.target.id === 'inpVida' ? 'maxHealthBase' : 
-                               e.target.id === 'inpDano' ? 'nailDamage' : 'charmSlots';
-                pData[mapKey] = parseInt(e.target.value) || 0;
+                               e.target.id === 'inpDano' ? 'nailDamage' : 
+                               e.target.id === 'inpPlayTime' ? 'playTime' :
+                               e.target.id === 'inpEssencia' ? 'dreamOrbs' :
+                               e.target.id === 'inpOre' ? 'ore' :
+                               e.target.id === 'inpKeys' ? 'simpleKeys' :
+                               e.target.id === 'inpEggs' ? 'rancidEggs' :
+                               e.target.id === 'inpMaskFrag' ? 'heartPieces' :
+                               e.target.id === 'inpGrubs' ? 'grubsCollected' :
+                               e.target.id === 'inpVesselFrag' ? 'vesselFragments' : 'charmSlots';
+                               
+                pData[mapKey] = parseFloat(e.target.value) || 0;
             } else if (e.target.type === 'checkbox') {
                 pData[key] = e.target.checked;
             } else if (e.target.tagName === 'SELECT') {
@@ -206,6 +242,7 @@ function syncUI() {
         currentSaveObj = JSON.parse(manualEditor.value);
         const pData = currentSaveObj.playerData ? currentSaveObj.playerData : currentSaveObj;
 
+        // Feedback Visual dos Presets
         togglePresetBtn('btnDinheiro', pData.geo > 50000, "🔄 Reverter Dinheiro", "💰 Geo Infinito");
         togglePresetBtn('btnVida', pData.maxHealthBase > 20, "🔄 Reverter Vida", "❤️ Vida Máxima");
         togglePresetBtn('btnHitKill', pData.nailDamage >= 2500, "🔄 Reverter Dano", "🗡️ Golpe Fatal");
@@ -213,27 +250,30 @@ function syncUI() {
         const temHab = pData.fireballLevel === 2 || pData.hasDash === true;
         togglePresetBtn('btnHabilidades', temHab, "🔄 Reverter Habilidades", "✨ Todas as Habilidades");
 
+        // Sync Numéricos
         inpGeo.value = pData.geo || 0;
         inpVida.value = pData.maxHealthBase || 5;
         inpDano.value = pData.nailDamage || 5;
         inpCharmSlots.value = pData.charmSlots || 3;
+        inpPlayTime.value = Math.floor(pData.playTime || 0);
+        inpEssencia.value = pData.dreamOrbs || 0;
+        inpOre.value = pData.ore || 0;
+        inpKeys.value = pData.simpleKeys || 0;
+        inpEggs.value = pData.rancidEggs || 0;
+        inpMaskFrag.value = pData.heartPieces || 0;
+        inpVesselFrag.value = pData.vesselFragments || 0;
+        inpGrubs.value = pData.grubsCollected || 0;
 
+        // Sync Checkboxes e Selects (Varredura Universal)
         document.querySelectorAll('#advancedEditor input[type="checkbox"]').forEach(chk => {
-            const key = chk.dataset.key;
-            if (key !== undefined) {
-                chk.checked = !!pData[key];
-            }
+            if (chk.dataset.key !== undefined) chk.checked = !!pData[chk.dataset.key];
         });
-
         document.querySelectorAll('#advancedEditor select').forEach(sel => {
-            const key = sel.dataset.key;
-            if (pData[key] !== undefined) {
-                sel.value = pData[key];
-            }
+            if (pData[sel.dataset.key] !== undefined) sel.value = pData[sel.dataset.key];
         });
 
     } catch (e) {
-        // Ignora erros temporários de digitação no JSON
+        // Sem alertas para não interromper a escrita bruta do utilizador
     }
 }
 
@@ -261,15 +301,14 @@ function aplicarMudanca(callback) {
 }
 
 // ==========================================
-// EVENTOS PRINCIPAIS
+// EVENTOS PRINCIPAIS E NAVEGAÇÃO
 // ==========================================
-
 fileInput.addEventListener('change', async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
     dgFileName = file.name;
-    statusText.innerText = "Descriptografando save...";
+    statusText.innerText = "A descriptografar ficheiro...";
     
     const buffer = await file.arrayBuffer();
     const bytes = new Uint8Array(buffer);
@@ -279,11 +318,11 @@ fileInput.addEventListener('change', async (event) => {
         currentSaveObj = JSON.parse(json);
         manualEditor.value = JSON.stringify(currentSaveObj, null, 2);
         
-        statusText.innerHTML = `<span style="color:var(--success)">✅ Arquivo <b>${dgFileName}</b> carregado com sucesso!</span>`;
+        statusText.innerHTML = `<span style="color:var(--success)">✅ Ficheiro <b>${dgFileName}</b> carregado com sucesso!</span>`;
         editorBox.classList.remove('hidden');
         syncUI();
     } catch (err) {
-        statusText.innerHTML = `<span style="color:var(--danger)">❌ Falha ao descriptografar. O arquivo .dat está corrompido ou é inválido.</span>`;
+        statusText.innerHTML = `<span style="color:var(--danger)">❌ Falha ao descriptografar. O ficheiro .dat está corrompido.</span>`;
     }
 });
 
@@ -300,11 +339,7 @@ tabBtns.forEach(btn => {
 
 btnToggleAdvanced.addEventListener('click', () => {
     advancedEditor.classList.toggle('hidden');
-    if (advancedEditor.classList.contains('hidden')) {
-        btnToggleAdvanced.innerHTML = "⚙️ Configuração Completa";
-    } else {
-        btnToggleAdvanced.innerHTML = "❌ Fechar Configuração";
-    }
+    btnToggleAdvanced.innerHTML = advancedEditor.classList.contains('hidden') ? "⚙️ Configuração Completa" : "❌ Fechar Configuração";
 });
 
 searchAmuletos.addEventListener('input', (e) => {
@@ -315,18 +350,14 @@ searchAmuletos.addEventListener('input', (e) => {
 });
 
 // ==========================================
-// LÓGICA DOS PRESETS
+// LÓGICA DOS PRESETS (Ações Rápidas)
 // ==========================================
-
 document.getElementById('btnDinheiro').addEventListener('click', () => {
     aplicarMudanca(p => p.geo = (p.geo > 50000) ? 100 : 9999999);
 });
 
 document.getElementById('btnVida').addEventListener('click', () => {
-    aplicarMudanca(p => {
-        const val = p.maxHealthBase > 20 ? 5 : 999;
-        p.maxHealthBase = p.maxHealth = p.health = val;
-    });
+    aplicarMudanca(p => p.maxHealthBase = p.maxHealth = p.health = p.maxHealthBase > 20 ? 5 : 999);
 });
 
 document.getElementById('btnHitKill').addEventListener('click', () => {
@@ -336,12 +367,8 @@ document.getElementById('btnHitKill').addEventListener('click', () => {
 document.getElementById('btnHabilidades').addEventListener('click', () => {
     aplicarMudanca((p) => {
         const temHab = p.fireballLevel === 2 || p.hasDash === true;
-        
-        habilidadesMap.forEach(h => {
-            if(h.type === 'bool') p[h.key] = !temHab;
-            if(h.type === 'spell') p[h.key] = temHab ? 0 : 2;
-        });
-        
+        habilidadesMap.forEach(h => p[h.key] = !temHab);
+        feitiçosMap.forEach(h => p[h.key] = temHab ? 0 : 2);
         ['canDash', 'canBackDash', 'canWallJump', 'canSuperDash', 'canShadowDash', 'hasAllNailArts'].forEach(k => p[k] = !temHab);
     });
 });
@@ -349,35 +376,26 @@ document.getElementById('btnHabilidades').addEventListener('click', () => {
 document.getElementById('btnAmuletos').addEventListener('click', () => {
     aplicarMudanca((p) => {
         const reverter = p.charmCost_1 === 0; 
-        
         for(let i = 1; i <= 40; i++) {
-            // Ignorar completamente a Bússola Desorientada (ID 2)
-            if (i === 2) continue; 
-
+            if (i === 2) continue; // Mantém a Bússola intacta
             p[`equippedCharm_${i}`] = false;
-            
             if (!reverter) {
                 p[`gotCharm_${i}`] = true;
                 p[`newCharm_${i}`] = false;
-                p[`charmCost_${i}`] = 0; // Custo zero
+                p[`charmCost_${i}`] = 0; 
             } else {
                 p[`gotCharm_${i}`] = false;
-                p[`charmCost_${i}`] = 1; // Valor genérico ao reverter
+                p[`charmCost_${i}`] = 1; 
             }
         }
-        
         if (!reverter) {
             p.charmSlots = 11;
-            p.fragileHealth_unbreakable = true;
-            p.fragileGreed_unbreakable = true;
-            p.fragileStrength_unbreakable = true;
-            p.royalCharmState = 4; // Coração do Vazio (Máximo)
-            p.grimmChildLevel = 5; // Melodia Despreocupada (Máximo)
+            p.fragileHealth_unbreakable = p.fragileGreed_unbreakable = p.fragileStrength_unbreakable = true;
+            p.royalCharmState = 4; 
+            p.grimmChildLevel = 5; 
         } else {
             p.charmSlots = 3;
-            p.fragileHealth_unbreakable = false;
-            p.fragileGreed_unbreakable = false;
-            p.fragileStrength_unbreakable = false;
+            p.fragileHealth_unbreakable = p.fragileGreed_unbreakable = p.fragileStrength_unbreakable = false;
             p.royalCharmState = 0; 
             p.grimmChildLevel = 0; 
         }
@@ -387,7 +405,6 @@ document.getElementById('btnAmuletos').addEventListener('click', () => {
 // ==========================================
 // EXPORTAÇÃO
 // ==========================================
-
 document.getElementById('btnDownTexto').addEventListener('click', () => {
     try {
         JSON.parse(manualEditor.value); 
@@ -406,4 +423,5 @@ document.getElementById('btnDownJogo').addEventListener('click', () => {
     }
 });
 
+// Inicialização
 initAdvancedUI();
