@@ -10,8 +10,15 @@
     
     <link rel="stylesheet" href="style.css">
 
+    <!-- CORREÇÃO DE RESPONSIVIDADE E VISIBILIDADE -->
     <style>
-        #editorBox {
+        /* Garante que o painel fique 100% invisível antes do save carregar */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Só aplica o layout responsivo QUANDO o painel não estiver escondido */
+        #editorBox:not(.hidden) {
             display: flex !important;
             flex-direction: column !important;
             gap: 20px !important;
@@ -21,14 +28,13 @@
 
         .grid-botoes {
             display: grid !important;
-            /* Cria uma grade que se adapta sozinha: botões com no mínimo 140px */
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
             gap: 10px !important;
             width: 100% !important;
         }
 
         .btn-preset {
-            white-space: normal !important; /* Permite quebrar o texto do botão */
+            white-space: normal !important;
             height: auto !important;
             min-height: 48px !important;
             padding: 10px !important;
@@ -45,7 +51,7 @@
         }
 
         .tab-btn {
-            flex: 1 1 calc(33% - 10px) !important; /* 3 abas por linha no celular */
+            flex: 1 1 calc(33% - 10px) !important;
             min-width: 110px !important;
             text-align: center !important;
             padding: 10px 5px !important;
@@ -53,13 +59,13 @@
 
         .download-section {
             display: flex !important;
-            flex-direction: column !important; /* Botões de download empilhados no celular */
+            flex-direction: column !important;
             gap: 10px !important;
         }
 
         @media (min-width: 600px) {
             .download-section {
-                flex-direction: row !important; /* Lado a lado no PC */
+                flex-direction: row !important;
             }
             .download-section button {
                 flex: 1 !important;
