@@ -6,7 +6,6 @@ let currentSaveObj = null;
 // ==========================================
 // DADOS BASE PARA INTERFACE (100% PT-BR)
 // ==========================================
-// Ordem exata dos 40 IDs de amuletos no código do jogo
 const amuletosNomes = [
     "Enxame Coletor",          // 1
     "Bússola Desorientada",    // 2
@@ -99,7 +98,6 @@ const searchAmuletos = document.getElementById('searchAmuletos');
 // CONSTRUÇÃO DA INTERFACE AVANÇADA
 // ==========================================
 function initAdvancedUI() {
-    // 1. Gerar Habilidades
     skillsContainer.innerHTML = '';
     habilidadesMap.forEach(hab => {
         const div = document.createElement('div');
@@ -126,7 +124,6 @@ function initAdvancedUI() {
         skillsContainer.appendChild(div);
     });
 
-    // 2. Gerar Amuletos
     charmsContainer.innerHTML = '';
     amuletosNomes.forEach((nome, index) => {
         const i = index + 1;
@@ -178,7 +175,6 @@ function initAdvancedUI() {
         charmsContainer.appendChild(div);
     });
 
-    // 3. Listener Global para Inputs Avançados
     document.querySelectorAll('#advancedEditor input:not(.search-bar), #advancedEditor select').forEach(input => {
         input.addEventListener('change', (e) => {
             if (!currentSaveObj) return;
@@ -210,7 +206,6 @@ function syncUI() {
         currentSaveObj = JSON.parse(manualEditor.value);
         const pData = currentSaveObj.playerData ? currentSaveObj.playerData : currentSaveObj;
 
-        // Atualiza Presets
         togglePresetBtn('btnDinheiro', pData.geo > 50000, "🔄 Reverter Dinheiro", "💰 Geo Infinito");
         togglePresetBtn('btnVida', pData.maxHealthBase > 20, "🔄 Reverter Vida", "❤️ Vida Máxima");
         togglePresetBtn('btnHitKill', pData.nailDamage >= 2500, "🔄 Reverter Dano", "🗡️ Golpe Fatal");
@@ -218,13 +213,11 @@ function syncUI() {
         const temHab = pData.fireballLevel === 2 || pData.hasDash === true;
         togglePresetBtn('btnHabilidades', temHab, "🔄 Reverter Habilidades", "✨ Todas as Habilidades");
 
-        // Atualiza Inputs
         inpGeo.value = pData.geo || 0;
         inpVida.value = pData.maxHealthBase || 5;
         inpDano.value = pData.nailDamage || 5;
         inpCharmSlots.value = pData.charmSlots || 3;
 
-        // Atualiza Checkboxes
         document.querySelectorAll('#advancedEditor input[type="checkbox"]').forEach(chk => {
             const key = chk.dataset.key;
             if (key !== undefined) {
@@ -232,7 +225,6 @@ function syncUI() {
             }
         });
 
-        // Atualiza Selects
         document.querySelectorAll('#advancedEditor select').forEach(sel => {
             const key = sel.dataset.key;
             if (pData[key] !== undefined) {
@@ -350,28 +342,45 @@ document.getElementById('btnHabilidades').addEventListener('click', () => {
             if(h.type === 'spell') p[h.key] = temHab ? 0 : 2;
         });
         
-        // Ativa variáveis de física também
         ['canDash', 'canBackDash', 'canWallJump', 'canSuperDash', 'canShadowDash', 'hasAllNailArts'].forEach(k => p[k] = !temHab);
     });
 });
 
 document.getElementById('btnAmuletos').addEventListener('click', () => {
     aplicarMudanca((p) => {
-        const reverter = p.charmCost_1 === 0;
+        const reverter = p.charmCost_1 === 0; 
+        
         for(let i = 1; i <= 40; i++) {
+            // Ignorar completamente a Bússola Desorientada (ID 2)
+            if (i === 2) continue; 
+
             p[`equippedCharm_${i}`] = false;
-            p[`charmCost_${i}`] = reverter ? 1 : 0;
-            if (!reverter && i !== 2) {
+            
+            if (!reverter) {
                 p[`gotCharm_${i}`] = true;
                 p[`newCharm_${i}`] = false;
-            } else if (reverter) {
+                p[`charmCost_${i}`] = 0; // Custo zero
+            } else {
                 p[`gotCharm_${i}`] = false;
+                p[`charmCost_${i}`] = 1; // Valor genérico ao reverter
             }
         }
-        p.charmSlots = reverter ? 3 : 11;
-        p.fragileHealth_unbreakable = p.fragileGreed_unbreakable = p.fragileStrength_unbreakable = !reverter;
-        p.royalCharmState = reverter ? 0 : 4; 
-        p.grimmChildLevel = reverter ? 0 : 5; 
+        
+        if (!reverter) {
+            p.charmSlots = 11;
+            p.fragileHealth_unbreakable = true;
+            p.fragileGreed_unbreakable = true;
+            p.fragileStrength_unbreakable = true;
+            p.royalCharmState = 4; // Coração do Vazio (Máximo)
+            p.grimmChildLevel = 5; // Melodia Despreocupada (Máximo)
+        } else {
+            p.charmSlots = 3;
+            p.fragileHealth_unbreakable = false;
+            p.fragileGreed_unbreakable = false;
+            p.fragileStrength_unbreakable = false;
+            p.royalCharmState = 0; 
+            p.grimmChildLevel = 0; 
+        }
     });
 });
 
